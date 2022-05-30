@@ -1,18 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import ClientRouter from './client/client';
 
 //路由数组
 const routes = [
-
-{
-	//基本格式
-    path: "main",
-    name: "",
-    component: undefined,
-    children: [],
-    redirect: ''
-
-}
-
+    ...ClientRouter
 ];
 
 //路由对象
