@@ -1,3 +1,11 @@
+<!--
+ * @Author: qiuzijie 771447612@qq.com
+ * @Date: 2022-05-31 08:53:52
+ * @LastEditors: qiuzijie 771447612@qq.com
+ * @LastEditTime: 2022-05-31 17:35:22
+ * @FilePath: \dog-ui\src\views\main\main.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <div class="common-layout">
     <el-container>
@@ -26,23 +34,29 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+  body {
+    margin: 0;
+  }
   #app {
     height: 100vh;
-  }
- .common-layout {
-   height: 100%;
- }
-
- .el-container {
+    .common-layout {
       height: 100%;
- }
+    }
 
- .el-header {
-   padding: 0;
- }
+    .el-header {
+      padding: 0;
+    }
 
- body {
-   margin: 0;
- }
+    .el-container {
+      height: 100%;
+    }
+  }
+
+
+
+
+
+
+
 </style>
