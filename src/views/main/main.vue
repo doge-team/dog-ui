@@ -16,7 +16,7 @@
         <el-header style="background-color:antiquewhite">
           <HeaderVue></HeaderVue>
         </el-header>
-        <el-main style="background-color:beige">
+        <el-main style="background-color:#fff">
           <NavigationVue :menus="menus"></NavigationVue>
         </el-main>
       </el-container>

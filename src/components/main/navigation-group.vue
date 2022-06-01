@@ -1,9 +1,9 @@
 <template>
-    <div class="group-container">
-        <div class="group-title">
+    <div class="group-container ">
+        <h4 class="group-title">
             <img :src="menu.icon" width="24">
             {{ menu.title }}
-        </div>
+        </h4>
         <div class="group-content">
             <SingleNavigationVue 
             v-for="navigation in menu.navigationList" 
@@ -37,7 +37,17 @@ export default defineComponent({
 
         .group-content {
             display: flex;
-            justify-content: space-between;
+            margin-top: 12px;
+            .single-container {
+                width: 15%;
+                min-width: 150px;
+                height: 54px;
+                padding: 15px;
+
+                &:not(:first-child) {
+                    margin-left: 24px;
+                }
+            }
         }
     }
 </style>

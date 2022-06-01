@@ -12,16 +12,15 @@
         active-text-color="#ffd04b"
         background-color="#545c64"
         class="el-menu-vertical-demo"
-        default-active="1"
         text-color="#fff"
       >
-        <el-sub-menu v-for="item in menus" :key="item.id" :index="item.order">
+        <el-menu-item v-for="item in menus" :key="item.id" :index="item.order">
           <template #title>
             <img :src="item.icon" width="24" style="color: white;">
               {{item.title}}
             <span></span>
           </template>
-        </el-sub-menu>
+        </el-menu-item>
       </el-menu>
 </template>
 
@@ -40,9 +39,10 @@ export default defineComponent({
 </script>
 
 <style >
-  .el-menu {
+  .el-menu--vertical {
     height: calc(100% - 61px);
     border: 0;
+    padding: 0 20px;
   }
 
   .mb-2 {
