@@ -1,59 +1,42 @@
+<!--
+ * @Author: qiuzijie 771447612@qq.com
+ * @Date: 2022-05-27 16:28:28
+ * @LastEditors: qiuzijie 771447612@qq.com
+ * @LastEditTime: 2022-06-01 14:04:54
+ * @FilePath: \dog-ui\src\layout\layout-aside.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
       <h5 class="mb-2">这里放图片和logo</h5>
       <el-menu
         active-text-color="#ffd04b"
         background-color="#545c64"
         class="el-menu-vertical-demo"
-        default-active="2"
+        default-active="1"
         text-color="#fff"
-        @open="handleOpen"
-        @close="handleClose"
       >
-        <el-sub-menu index="1">
+        <el-sub-menu v-for="item in menus" :key="item.id" :index="item.order">
           <template #title>
-            <el-icon><Location /></el-icon>
-            <span>Navigator One</span>
+            <img :src="item.icon" width="24" style="color: white;">
+              {{item.title}}
+            <span></span>
           </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item one</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
-          </el-sub-menu>
         </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon><Document/></el-icon>
-          <span>Navigator Three</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon><setting/></el-icon>
-          <span>Navigator Four</span>
-        </el-menu-item>
       </el-menu>
 </template>
 
-<script lang="ts" setup>
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+import { Menu } from '@/models/menu';
+
+export default defineComponent({
+  props: {
+    menus: {
+      type: [] as PropType<Array<Menu>>,
+      default: () => []
+    }
+  }
+})
 </script>
 
 <style >

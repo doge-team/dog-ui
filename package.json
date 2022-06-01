@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:dev": "cross-env NODE_ENV=development dotenv -e .env.dev.serve vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^5.1.0",
     "element-plus": "^2.2.2",
     "less-loader": "^11.0.0",
     "vue": "^3.2.13",
