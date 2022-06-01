@@ -37,7 +37,7 @@ export default defineComponent({
 
         .group-content {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
         }
     }
 </style>
