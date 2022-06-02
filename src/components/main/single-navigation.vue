@@ -1,7 +1,7 @@
 <template >
         <div class="single-container el-card is-hover-shadow">
             <div class="icon">
-                <img :src="navigation.icon" width="24">
+                <img :src="'http://152.136.215.195:8082/' + navigation.icon" width="32">
             </div>
             <div class="content">
                 <div class="title overflowClip_1">
@@ -33,6 +33,15 @@ export default defineComponent({
     .single-container {
         display: flex;
         cursor: pointer;
+
+        .icon {
+            img {
+                float: left;
+                display: block;
+                margin-right: 10px;
+                border-radius: 50px;
+            }
+        }
         
         .content {
             display: flex;

@@ -8,7 +8,7 @@
  */
 export const BaseUrlConfig = {
     development: {
-      baseUrl: 'http://ug7qs3.natappfree.cc' // 测试接口域名
+      baseUrl: 'http://q9vxaj.natappfree.cc' // 测试接口域名
     },
     beta: {
       baseUrl: 'http://xxx.xxx.xxx.xxx:xxxx' // 测试接口域名
