@@ -8,10 +8,8 @@
 -->
 <template>
   <el-menu
-    :default-active="activeIndex2"
     class="el-menu-demo"
     mode="horizontal"
-    @select="handleSelect"
   >
     <el-menu-item index="1">Processing Center</el-menu-item>
     <el-sub-menu index="2">
@@ -31,13 +29,12 @@
   </el-menu>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-const activeIndex2 = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+ export default defineComponent({
+
+})
 </script>
 
 <style setup>
