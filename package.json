@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "serve:dev": "cross-env NODE_ENV=development dotenv -e .env.dev.serve vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "push": "docker build -t damocleses/dog-ui . & docker push damocleses/dog-ui"
   },
   "dependencies": {
     "core-js": "^3.8.3",
