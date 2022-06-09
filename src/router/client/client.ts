@@ -10,6 +10,11 @@ const ClientRouter: Array<RouteRecordRaw> = [
     redirect: '/main'
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/admin/login/login.vue')
+  },
+  {
     path: '/404',
     name: 'Not Found',
     component: () => import('@/views/error/401.vue')
