@@ -107,7 +107,7 @@ const submit = async() => {
     if(result.data.code !== -1) {
         router.push({
             path: '/main'
-        })
+        });
     } else {
         ElMessage.error('登陆失败，账号或密码错误')
     }
