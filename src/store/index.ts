@@ -6,14 +6,15 @@
  * @LastEditTime: 2021-01-08 20:46:07
  */
 import { createStore, createLogger } from 'vuex'
+import { UserStore } from './modules/user'
+import {  UserState } from './modules/user/user'
 // import createPersistedState from 'vuex-persistedstate'
-import { store as admin, AppStore, AppState } from '@/store/modules/admin'
 
 export interface RootState {
-    admin: AppState
+    admin: UserState
 }
 
-export type Store = AppStore<Pick<RootState, 'admin'>>
+export type Store = UserStore<Pick<RootState, 'admin'>>
 
 // Plug in logger when in development environment
 const debug = process.env.NODE_ENV !== 'production'
@@ -24,7 +25,6 @@ const plugins = debug ? [createLogger({})] : []
 export const store = createStore({
   plugins,
   modules: {
-    admin
   }
 })
 

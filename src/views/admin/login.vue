@@ -1,32 +1,4 @@
 <template>
-    <!-- <div class="login-container">
-        <div class="login-box">
-            <div class="img"></div>
-            <div class="login-form">
-                <p>登录</p>
-                <el-form :model="form" label-width="120px">
-                    <el-form-item label="用户名:">
-                        <el-input
-                            :model="form.userName"
-                            class="w-50 m-2"
-                            placeholder="请输入用户名"
-                            :prefix-icon="Search"
-                        />
-                    </el-form-item>
-
-                    <el-form-item label="密码:">
-                        <el-input
-                            :model="form.password"
-                            class="w-50 m-2"
-                            placeholder="请输入密码"
-                            :prefix-icon="Search"
-                        />
-                    </el-form-item>
-                </el-form>
-            </div>
-
-        </div>
-    </div> -->
 
   <div class="container">
       <div class="tit">登录</div>
@@ -67,13 +39,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { login } from '@/api/login';
 import { User } from '@/models/admin/user';
 import router from '@/router';
+import { userStoreModule } from '@/store/modules/user/user';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { useStore } from 'node_modules/vuex/types';
 import { reactive, ref } from 'vue';
 
-let loading = false;
+let loading = ref(false);
 const rules = reactive<FormRules>({
     account: [
         { required: true, message: '请输入用户名!', trigger: 'blur' },
@@ -100,12 +73,12 @@ const submit = async() => {
         return;
     }
     
-    loading = true;
+    loading.value = true;
     const user = new User(form.account,form.passwd);
-    var result = await login(user);
-    loading = false;
-    if(result.data.code !== -1) {
-        
+    var result = await userStoreModule.login(user);
+    console.log('login result:', result);
+    loading.value = false;
+    if(!!result) {
         router.push({
             path: '/main'
         });
