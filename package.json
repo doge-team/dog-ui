@@ -14,15 +14,19 @@
     "cross-env": "^7.0.3",
     "dotenv-cli": "^5.1.0",
     "element-plus": "^2.2.2",
+    "js-cookie": "^3.0.1",
     "js-md5": "^0.7.3",
     "less-loader": "^11.0.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.2",
+    "vuex-module-decorators": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@types/js-cookie": "^3.0.2",
     "@types/js-md5": "^0.4.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",

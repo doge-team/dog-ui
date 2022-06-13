@@ -105,6 +105,7 @@ const submit = async() => {
     var result = await login(user);
     loading = false;
     if(result.data.code !== -1) {
+        
         router.push({
             path: '/main'
         });
