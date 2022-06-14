@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import AdminRouter from './admin/admin';
 import ClientRouter from './client/client';
 
 //路由数组
 const routes = [
-    ...ClientRouter
+    ...ClientRouter,
+    ...AdminRouter
 ];
 
 //路由对象

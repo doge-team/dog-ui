@@ -9,13 +9,15 @@
           <HeaderVue></HeaderVue>
         </el-header>
         <el-main style="background-color: rgb(245, 245, 245);">
-          <NavigationVue :menus="menus"></NavigationVue>
         </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 <script lang="ts" setup>
+import AsideVue from '@/layout/layout-aside.vue';
+import HeaderVue from '@/layout/layout-header.vue';
+import NavigationVue from '@/components/main/navigation.vue';
 import { Menu } from '@/models/menu';
 const menus = [
     { 
@@ -27,9 +29,9 @@ const menus = [
     },
     {
         icon: 'none',
-        id: 0,
+        id: 1,
         navigationList: [],
-        order: 0,
+        order: 1,
         title: '导航管理'
     }
 ] as Menu[];

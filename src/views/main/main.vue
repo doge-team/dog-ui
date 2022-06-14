@@ -36,22 +36,4 @@ onBeforeMount(() => {
 </script>
 
 <style lang="less">
-  body {
-    margin: 0;
-  }
-  #app {
-    height: 100vh;
-    .common-layout {
-      height: 100%;
-    }
-
-    .el-header {
-      padding: 0;
-    }
-
-    .el-container {
-      height: 100%;
-    }
-  }
-
 </style>

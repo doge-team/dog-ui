@@ -1,27 +1,20 @@
 import { RouteRecordRaw } from 'vue-router'
-const ClientRouter: Array<RouteRecordRaw> = [
+const AdminRouter: Array<RouteRecordRaw> = [
   {
-    path: '/main',
-    name: 'Main Client',
-    component: () => import('@/views/main/main.vue')
-  },
-  {
-    path: '',
-    redirect: '/main'
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/admin/login.vue')
-  },
-  {
-    path: '/404',
-    name: 'Not Found',
-    component: () => import('@/views/error/401.vue')
-  },
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/404',
+    path: '/admin',
+    name: 'Admin Client',
+    component: () => import('@/views/admin/admin.vue'),
+    children: [
+      {
+        path: '',
+        redirect: '/admin/main'
+      },
+      {
+        path: '/admin/main',
+        name: 'Admin Main',
+        component: () => import('@/views/admin/admin.vue')
+      }
+    ]
   }
 ]
-export default ClientRouter
+export default AdminRouter

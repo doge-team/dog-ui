@@ -43,7 +43,6 @@ import { User } from '@/models/admin/user';
 import router from '@/router';
 import { userStoreModule } from '@/store/modules/user/user';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import { useStore } from 'node_modules/vuex/types';
 import { reactive, ref } from 'vue';
 
 let loading = ref(false);
@@ -72,7 +71,7 @@ const submit = async() => {
     if(!checkResult) {
         return;
     }
-    
+
     loading.value = true;
     const user = new User(form.account,form.passwd);
     var result = await userStoreModule.login(user);
