@@ -1,35 +1,45 @@
-<!--
- * @Author: qiuzijie 771447612@qq.com
- * @Date: 2022-05-27 17:24:55
- * @LastEditors: qiuzijie 771447612@qq.com
- * @LastEditTime: 2022-05-27 17:39:09
- * @FilePath: \dog-ui\src\layout\layout-header.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <el-menu
     class="el-menu-demo"
     mode="horizontal"
+    :ellipsis="false"
   >
     <div class="flex-grow" />
-    <el-menu-item index="4">Orders</el-menu-item>
+      <el-sub-menu>
+        <template #title>
+          <div class="avatar-container">
+            <img :src="user.avatar" alt="头像" class="avatar" />
+          </div>
+        </template>
+
+        <el-menu-item index="0-1">管理系统</el-menu-item>
+        <el-menu-item index="0-2">退出登录</el-menu-item>
+      </el-sub-menu>
   </el-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import { User } from "@/models/admin/user";
+import { toRefs } from "vue";
 
- export default defineComponent({
+const props = defineProps({ user: User })
 
-})
+const { user } = toRefs(props);
+console.log(user.value)
+// user.value.avatar = 'http://152.136.215.195:8082/dogUI/4ffd0c88-5f62-4a65-914c-beed4bb76258.jpeg'
+
 </script>
 
-<style setup>
+<style lang="less">
     .el-menu--horizontal {
         height: 60px;
     }
 
     .flex-grow {
       flex-grow: 1;
+    }
+
+    .avatar-container {
+      width: 56px;
     }
 </style>

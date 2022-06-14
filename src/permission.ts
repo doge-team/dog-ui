@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 import { userStoreModule } from './store/modules/user/user'
 NProgress.configure({ showSpinner: false })
 
-const whitList = ['/login']
+const whitList = ['/login', '/main']
 
 router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
   // Start progress bar

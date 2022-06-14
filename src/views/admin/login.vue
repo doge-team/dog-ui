@@ -79,7 +79,7 @@ const submit = async() => {
     loading.value = false;
     if(!!result) {
         router.push({
-            path: '/main'
+            path: '/admin'
         });
     } else {
         ElMessage.error('登陆失败，账号或密码错误')
@@ -92,7 +92,7 @@ const submit = async() => {
     margin: 0;
     padding: 0;
 }
-body{
+#app{
     height: 100vh;
     /*弹性布局居中*/
     display: flex;
