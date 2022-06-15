@@ -29,7 +29,7 @@ export default defineComponent({
     }
 })
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .single-container {
         display: flex;
         cursor: pointer;

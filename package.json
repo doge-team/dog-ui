@@ -17,6 +17,7 @@
     "js-cookie": "^3.0.1",
     "js-md5": "^0.7.3",
     "less-loader": "^11.0.0",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",

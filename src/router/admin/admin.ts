@@ -7,12 +7,12 @@ const AdminRouter: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        redirect: '/admin/main'
+        redirect: '/admin/menu'
       },
       {
-        path: '/admin/main',
+        path: '/admin/menu',
         name: 'Admin Main',
-        component: () => import('@/views/admin/admin.vue')
+        component: () => import('@/components/admin/menu.vue')
       }
     ]
   }

@@ -1,0 +1,6 @@
+export enum MenuMutationTypes {
+  LOAD_ALL_MENU = 'LOAD_ALL_MENU',
+  ADD_MENU = 'ADD_MENU',
+  UPDATE_MENU = 'UPDATE_MENU',
+  REMOVE_MENU = 'REMOVE_MENU',
+}

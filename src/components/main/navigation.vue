@@ -19,13 +19,13 @@ export default defineComponent({
     },
     props: {
         menus: {
-        type: [] as PropType<Array<Menu>>,
+        type: Array as PropType<Array<Menu>>,
         default: () => []
         }
     }
 })
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .navigation-container {
         display: flex;
         flex-direction: column;

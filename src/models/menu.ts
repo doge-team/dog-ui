@@ -14,4 +14,5 @@ export interface Menu {
     navigationList: Navigation[];
     order: number;
     title: string;
+    subRoute?: string;
 }

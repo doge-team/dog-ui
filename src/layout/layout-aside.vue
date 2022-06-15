@@ -1,11 +1,3 @@
-<!--
- * @Author: qiuzijie 771447612@qq.com
- * @Date: 2022-05-27 16:28:28
- * @LastEditors: qiuzijie 771447612@qq.com
- * @LastEditTime: 2022-06-01 14:04:54
- * @FilePath: \dog-ui\src\layout\layout-aside.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
       <h5 class="mb-2">这里放图片和logo</h5>
       <el-menu
@@ -13,8 +5,14 @@
         background-color="#545c64"
         class="el-menu-vertical-demo"
         text-color="#fff"
+        default-active="0"
       >
-        <el-menu-item v-for="item in menus" :key="item.id" :index="item.order">
+        <el-menu-item 
+        v-for="item in menus" 
+        :key="item.id" 
+        :index="item?.order.toString()"
+        @click="navagationTo(item?.subRoute)"
+        >
           <template #title>
             <img :src="item.icon" width="24" style="color: white;">
               {{item.title}}
@@ -24,21 +22,22 @@
       </el-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+import { PropType, toRefs } from 'vue';
 import { Menu } from '@/models/menu';
+import router from '@/router';
 
-export default defineComponent({
-  props: {
-    menus: {
-      type: [] as PropType<Array<Menu>>,
-      default: () => []
-    }
-  }
-})
+const props = defineProps({ menus: Array as PropType<Menu[]> });
+
+const { menus } = toRefs(props);
+
+const navagationTo = (uri: string) => {
+  router.push({ path: `/admin/${uri}` })
+}
+
 </script>
 
-<style >
+<style scoped>
   .el-menu--vertical {
     height: calc(100% - 61px);
     border: 0;

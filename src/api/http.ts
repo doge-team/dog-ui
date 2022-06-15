@@ -2,7 +2,6 @@ import axios from '../utils/http/axios';
 
 export class Http {
     static get(url: string){
-        console.log(axios.defaults.baseURL);
         return axios.get(url)
     }
 

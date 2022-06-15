@@ -1,42 +1,43 @@
 <template>
-
-  <div class="container">
-      <div class="tit">登录</div>
-      <!-- <input v-model="account" type="text" placeholder="账号">
-      <input v-model="passwd" type="password" placeholder="密码"> -->
-      <el-form 
-      :model="form" 
-      :rules="rules"
-      ref="formRef"
-      >
-          <el-form-item  prop="account">
-              <el-input placeholder="账号" v-model="form.account"></el-input>
-          </el-form-item>
-          <el-form-item  prop="passwd">
-              <el-input placeholder="密码" v-model="form.passwd" show-password></el-input>
-          </el-form-item>
-      </el-form>
-      <button @click="submit" v-loading="loading">登录</button>
-      <span>没有账号？<a href="#">去注册</a> </span>
-  </div>
-  <div class="square">
-      <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-      </ul>
-  </div>
-  <div class="circle">
-      <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-      </ul>
-  </div>
+    <div class="login-container">
+        <div class="container">
+            <div class="tit">登录</div>
+            <!-- <input v-model="account" type="text" placeholder="账号">
+            <input v-model="passwd" type="password" placeholder="密码"> -->
+            <el-form 
+            :model="form" 
+            :rules="rules"
+            ref="formRef"
+            >
+                <el-form-item  prop="account">
+                    <el-input placeholder="账号" v-model="form.account"></el-input>
+                </el-form-item>
+                <el-form-item  prop="passwd">
+                    <el-input placeholder="密码" v-model="form.passwd" show-password></el-input>
+                </el-form-item>
+            </el-form>
+            <button @click="submit" v-loading="loading">登录</button>
+            <span>没有账号？<a href="#">去注册</a> </span>
+        </div>
+        <div class="square">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="circle">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
 </template>
 <script lang="ts" setup>
 import { User } from '@/models/admin/user';
@@ -75,7 +76,6 @@ const submit = async() => {
     loading.value = true;
     const user = new User(form.account,form.passwd);
     var result = await userStoreModule.login(user);
-    console.log('login result:', result);
     loading.value = false;
     if(!!result) {
         router.push({
@@ -92,7 +92,7 @@ const submit = async() => {
     margin: 0;
     padding: 0;
 }
-#app{
+.login-container{
     height: 100vh;
     /*弹性布局居中*/
     display: flex;

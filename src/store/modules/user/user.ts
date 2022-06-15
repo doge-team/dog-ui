@@ -34,7 +34,7 @@ export class UserStore extends VuexModule implements UserState {
     }
 
     @Action({ commit: UserMutationTypes.SET_TOKEN })
-    async loginout() { 
+    async logout() { 
         removeToken()
         logout()
         return '';

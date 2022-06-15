@@ -1,0 +1,1 @@
+export const routeWhitList = ['/login', '/main']
