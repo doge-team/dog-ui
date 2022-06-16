@@ -42,6 +42,7 @@
 <script lang="ts" setup>
 import { User } from '@/models/admin/user';
 import router from '@/router';
+import { checkForm } from '@/utils/form';
 import { userStoreModule } from '@/store/modules/user/user';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
@@ -63,12 +64,8 @@ const form = reactive({
 
 const formRef = ref<FormInstance>();
 
-const checkForm = async() => {
-    const result = await formRef.value.validate();
-    return result.valueOf();
-}
 const submit = async() => {
-    const checkResult = await checkForm();
+    const checkResult = await checkForm(formRef);
     if(!checkResult) {
         return;
     }

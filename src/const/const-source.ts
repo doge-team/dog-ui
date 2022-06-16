@@ -1,0 +1,1 @@
+export const logoUrl = "http://152.136.215.195:8082/dogUI/doge.gif";

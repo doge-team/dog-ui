@@ -15,12 +15,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import SectionVue from '../common/section.vue';
 import { Navigation } from '@/models/navigation';
 
 export default defineComponent({
     components: {
-        SectionVue
     },
     props: {
         navigation: {

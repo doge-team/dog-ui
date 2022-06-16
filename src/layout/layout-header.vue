@@ -5,7 +5,7 @@
     :ellipsis="false"
   >
     <div class="flex-grow" />
-      <el-sub-menu v-if="!!token">
+      <el-sub-menu v-if="!!token" index="0">
         <template #title>
           <div class="avatar-container">
             <el-avatar :size="50" :src="user?.avatar" />

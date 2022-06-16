@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="260px">
         <AsideVue :menus="menus"></AsideVue>
       </el-aside>
       <el-container>
@@ -16,6 +16,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { logoUrl } from '@/const/const-source';
 import AsideVue from '@/layout/layout-aside.vue';
 import HeaderVue from '@/layout/layout-header.vue';
 import { User } from '@/models/admin/user';
@@ -41,7 +42,7 @@ const menus = [
 ] as Menu[];
 
 const state = ref({user: new User('test','123')})
-state.value.user.avatar = 'http://152.136.215.195:8082/dogUI/4ffd0c88-5f62-4a65-914c-beed4bb76258.jpeg'
+state.value.user.avatar = logoUrl
 </script>
 <style lang="less" scoped>
     
