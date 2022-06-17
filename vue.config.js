@@ -12,5 +12,5 @@ module.exports = defineConfig({
   lintOnSave:false,
   devServer: {
     allowedHosts: ['.natappfree.cc']
-  }
+  },
 })

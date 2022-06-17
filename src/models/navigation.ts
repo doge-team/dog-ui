@@ -5,6 +5,6 @@ export interface Navigation {
     link: string;
     menuId: number;
     openType: string;
-    order: number
+    order: number;
     title: string;
 }

@@ -1,12 +1,13 @@
 <template>
-     <el-dialog v-model="shown" title="菜单" @close="onClsoe" v-loading="loading">
+     <el-dialog v-model="shown" title="导航" @close="onClsoe" v-loading="loading">
         <div class="menu-dialog-container">
             <singleFormVue 
-            ref="formComp"
-            :form="menuFormComp?.form"
-            :rules="menuFormComp?.rules"
+            ref="formComp" 
+            @confirm="$emit('confirm', $event.target.value)"
+            :form="navFormComp?.form"
+            :rules="navFormComp?.rules"
             >
-                <menuFormVue ref="menuFormComp" :form="form"></menuFormVue>
+                <navigationFormVue ref="navFormComp" :form="form"></navigationFormVue>
             </singleFormVue>
         </div>
         <template #footer>
@@ -23,13 +24,12 @@ import { actionType, defualtMenuIcon } from '@/const/const-source';
 import { Menu } from '@/models/menu';
 import { menuStoreModule } from '@/store/modules/menu/menu';
 import { ElMessage } from 'element-plus';
-import { emit } from 'process';
 import { ref } from 'vue';
-import menuFormVue from './menu-form.vue';
+import navigationFormVue from './navigation-form.vue';
 
 
 const formComp = ref(null);
-const menuFormComp = ref(null);
+const navFormComp = ref(null);
 const shown = ref(false);
 const loading = ref(false);
 let menuAction: actionType = 'new';
@@ -39,6 +39,8 @@ const form = ref({
     order: 0,
     title: '',
 } as Menu);
+
+defineEmits(['confirm']);
 
 const onSubmit = async() => {
     loading.value = true;

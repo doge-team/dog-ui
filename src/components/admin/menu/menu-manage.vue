@@ -1,5 +1,8 @@
 <template>
     <div class="menu-container el-card is-hover-shadow" v-loading="loading">
+        <div class="actions">
+            <el-button type='primary' @click="onAddMenu">新增</el-button>
+        </div>
         <el-table :data="menus" stripe style="width: 100%">
             <el-table-column prop="icon" label="图标" width="180">
                 <template #default="scope">
@@ -7,7 +10,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="title" label="目录名" width="180" />
-            <el-table-column prop="order" label="顺序" />
+            <el-table-column prop="order" label="顺序" width="180"/>
             <el-table-column prop="navigationList" label="导航"> 
                 <template #default="scope">
                     <div v-if="hasNavigation(scope)">
@@ -17,14 +20,14 @@
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template #default="scope">
-                    <el-button type="primary" :icon="Edit" circle />
-                    <el-button type="danger" :icon="Delete" circle @click="removeClick(scope.row.id)"/>
+                    <el-button type="primary" :icon="Edit" circle @click="onEditMenu(scope.row)"/>
+                    <el-button type="danger" :icon="Delete" circle @click="removeClick(scope.row.id)" v-loading='removeLoding[scope.row.id]'/>
                 </template>
     </el-table-column>
         </el-table>
     </div>
 
-    <menuDialogVue></menuDialogVue>
+    <menuDialogVue ref="menuDialog"></menuDialogVue>
 </template>
 <script lang="ts" setup>
 import menuDialogVue from './menu-dialog.vue';
@@ -36,18 +39,26 @@ import {
 } from '@element-plus/icons-vue'
 import { computed } from '@vue/reactivity';
 import { isEmpty } from 'lodash';
+import { ElMessage } from 'element-plus';
 
-    const loading = ref(false);
+    const menuDialog = ref(null);
     const menus = computed(() => menuStoreModule.menus);
+    const loading = computed(() => menuStoreModule.loading);
+    const removeLoding = ref([]);
 
     const fetchData = async() => {
-        loading.value = true;
         await menuStoreModule.loadMenus();
-        loading.value = false;
     }
 
-    const removeClick = (menuId) => {
-        menuStoreModule.removeMenu(menuId);
+    const removeClick = async(menuId) => {
+        removeLoding[menuId] = true;
+        const result = await menuStoreModule.removeMenu(menuId);
+        if(result) {
+            ElMessage.success('删除成功');
+        } else {
+            ElMessage.error('删除失败');
+        }
+        removeLoding[menuId] = false;
     }
 
     const hasNavigation = (scope) => {
@@ -55,8 +66,12 @@ import { isEmpty } from 'lodash';
         return !isEmpty(scope.row.navigationList);
     }
 
-    const onEditMenu = (menu: Menu) => {
+    const onEditMenu = (menu) => {
+        menuDialog.value.open(menu);
+    }
 
+    const onAddMenu = () => {
+        menuDialog.value.open();
     }
 
     onBeforeMount(() => {
@@ -67,5 +82,11 @@ import { isEmpty } from 'lodash';
 <style lang="less">
     .menu-container {
         height: 100%;
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 30px;
+        }
     }
 </style>

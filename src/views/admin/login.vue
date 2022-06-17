@@ -83,7 +83,7 @@ const submit = async() => {
     }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 *{
     /*初始化*/
     margin: 0;

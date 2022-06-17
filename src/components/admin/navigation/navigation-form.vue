@@ -1,10 +1,30 @@
 <template>
+    <el-form-item prop="menuId" label="菜单">
+        <el-input v-model="form.menuId"></el-input>
+    </el-form-item>
     <el-form-item prop="title" label="标题">
         <el-input v-model="form.title"></el-input>
+    </el-form-item>
+        <el-form-item prop="description" label="副标题">
+        <el-input v-model="form.description"></el-input>
     </el-form-item>
     <el-form-item prop="order" label="排序">
         <el-input v-model="form.order" type="number"></el-input>
     </el-form-item>
+    <el-row>
+        <el-col>
+            </el-form-item>
+                <el-form-item prop="link" label="链接">
+                <el-input v-model="form.link"></el-input>
+            </el-form-item>
+        </el-col>
+        <el-col>
+            <el-form-item prop="openType" label="打开方式">
+                <el-input v-model="form.openType" type="number"></el-input>
+            </el-form-item>
+        </el-col>
+    </el-row>
+
     <el-form-item prop="icon" label="图标">
         <el-upload
             class="avatar-uploader"
@@ -20,14 +40,14 @@
 </template>
 <script lang="ts" setup>
 import { defualtMenuIcon } from '@/const/const-source';
-import { Menu } from '@/models/menu';
+import { Navigation } from '@/models/navigation';
 import { Plus } from '@element-plus/icons-vue';
 import { computed, reactive } from '@vue/reactivity';
 import { ElMessage, FormRules, UploadProps } from 'element-plus';
 import { PropType, toRefs } from 'vue';
 
 const props = defineProps({
-    form: Object as PropType<Menu>
+    form: Object as PropType<Navigation>
 });
 
 const { form } = toRefs(props);
@@ -35,8 +55,6 @@ const { form } = toRefs(props);
 const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
 
 const onUploadSucceed:UploadProps['onSuccess'] = ( response,uploadFile) => {
-    console.log('upload response:', response);
-    console.log('uploadFile:', uploadFile);
     form.value.icon = URL.createObjectURL(uploadFile.raw!)
 }
 
@@ -52,6 +70,18 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 const rules = reactive<FormRules>({
+    menuId: [
+        { required: true, message: '请选择对应的菜单!', trigger: 'blur' },
+    ],
+    description: [
+        { required: true, message: '请输入描述信息!', trigger: 'blur' },
+    ],
+    link: [
+        { required: true, message: '请输入导航链接!', trigger: 'blur' },
+    ],
+    openType: [
+        { required: true, message: '请选择打开链接的方式!', trigger: 'blur' },
+    ],
     title: [
         { required: true, message: '请输入标题!', trigger: 'blur' },
     ],
