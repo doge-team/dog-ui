@@ -13,7 +13,7 @@
                     <el-input placeholder="账号" v-model="form.account"></el-input>
                 </el-form-item>
                 <el-form-item  prop="passwd">
-                    <el-input placeholder="密码" v-model="form.passwd" show-password></el-input>
+                    <el-input placeholder="密码" v-model="form.passwd" show-password @keyup.enter="submit"></el-input>
                 </el-form-item>
             </el-form>
             <button @click="submit" v-loading="loading">登录</button>
@@ -42,8 +42,8 @@
 <script lang="ts" setup>
 import { User } from '@/models/admin/user';
 import router from '@/router';
+import { userStoreModule } from '@/store/modules/user';
 import { checkForm } from '@/utils/form';
-import { userStoreModule } from '@/store/modules/user/user';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 
@@ -75,6 +75,7 @@ const submit = async() => {
     var result = await userStoreModule.login(user);
     loading.value = false;
     if(!!result) {
+        ElMessage.success('登陆成功,欢迎来到dog系统')
         router.push({
             path: '/admin'
         });
@@ -84,11 +85,6 @@ const submit = async() => {
 }
 </script>
 <style lang="less" scoped>
-*{
-    /*初始化*/
-    margin: 0;
-    padding: 0;
-}
 .login-container{
     height: 100vh;
     /*弹性布局居中*/
@@ -120,15 +116,6 @@ const submit = async() => {
     font-size: 26px;
     margin: 65px auto 70px auto;
 }
-// .container input{
-//     width: 280px;
-//     height: 30px;
-//     text-indent: 8px;
-//     border: none;
-//     border-bottom: 1px solid #ddd;
-//     outline: none;
-//     margin: 12px auto;
-// }
 
 form.el-form {
     width: 80%;

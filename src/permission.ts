@@ -3,7 +3,7 @@ import 'nprogress/nprogress.css'
 import router from '@/router'
 import { RouteLocationNormalized } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { userStoreModule } from './store/modules/user/user'
+import { userStoreModule } from './store/modules/user'
 import { routeWhitList } from './const/route'
 NProgress.configure({ showSpinner: false })
 

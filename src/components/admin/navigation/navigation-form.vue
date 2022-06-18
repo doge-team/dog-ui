@@ -1,6 +1,13 @@
 <template>
     <el-form-item prop="menuId" label="菜单">
-        <el-input v-model="form.menuId"></el-input>
+        <el-select v-model="form.menuId" class="m-2" placeholder="Select" size="large">
+            <el-option
+            v-for="item in menuSources"
+            :key="item.id"
+            :label="item.title"
+            :value="item.id"
+            />
+        </el-select>
     </el-form-item>
     <el-form-item prop="title" label="标题">
         <el-input v-model="form.title"></el-input>
@@ -13,14 +20,20 @@
     </el-form-item>
     <el-row>
         <el-col>
-            </el-form-item>
-                <el-form-item prop="link" label="链接">
+            <el-form-item prop="link" label="链接">
                 <el-input v-model="form.link"></el-input>
             </el-form-item>
         </el-col>
         <el-col>
             <el-form-item prop="openType" label="打开方式">
-                <el-input v-model="form.openType" type="number"></el-input>
+                    <el-select v-model="form.openType" class="m-2" placeholder="Select" size="large">
+                        <el-option
+                            v-for="item in openType"
+                            :key="item.code"
+                            :label="item.description"
+                            :value="item.code"
+                        />
+                    </el-select>
             </el-form-item>
         </el-col>
     </el-row>
@@ -32,6 +45,7 @@
             :show-file-list="false"
             :on-success="onUploadSucceed"
             :before-upload="beforeAvatarUpload"
+            :headers="myHeaders"
         >
             <img v-if="form.icon" :src="src" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -39,55 +53,45 @@
     </el-form-item>
 </template>
 <script lang="ts" setup>
+import { getAllMenusWithoutNav } from '@/api/menu';
 import { defualtMenuIcon } from '@/const/const-source';
+import { useFormHooks } from '@/hooks/form';
+import { useUploadHooks } from '@/hooks/upload';
+import { Menu } from '@/models/menu';
 import { Navigation } from '@/models/navigation';
+import { getToken } from '@/utils/cookies';
 import { Plus } from '@element-plus/icons-vue';
-import { computed, reactive } from '@vue/reactivity';
-import { ElMessage, FormRules, UploadProps } from 'element-plus';
-import { PropType, toRefs } from 'vue';
+import { computed, reactive, ref } from '@vue/reactivity';
+import { FormRules } from 'element-plus';
+import { onBeforeMount, PropType, toRefs } from 'vue';
 
 const props = defineProps({
-    form: Object as PropType<Navigation>
+    form: Object as PropType<Navigation>,
 });
 
 const { form } = toRefs(props);
-
 const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
+const menuSources = ref([] as Menu[]);
+const openType = ref([
+    { code: 'TARGET_REDIRECTION', description: '新开页面' },
+    { code: 'TARGET_INLINE', description: '路由跳转' },
+])
+const myHeaders = { token: getToken()};
 
-const onUploadSucceed:UploadProps['onSuccess'] = ( response,uploadFile) => {
-    form.value.icon = URL.createObjectURL(uploadFile.raw!)
-}
+const { beforeAvatarUpload, onUploadSucceed } = useUploadHooks(form);
+const { getFormRules } = useFormHooks('navigation');
 
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-    if (rawFile.type !== 'image/jpeg') {
-        ElMessage.error('Avatar picture must be JPG format!')
-        return false
-    } else if (rawFile.size / 1024 / 1024 > 2) {
-        ElMessage.error('Avatar picture size can not exceed 2MB!')
-        return false
+const rules = reactive<FormRules>(getFormRules());
+
+const fetchData = async() => {
+    const result = await getAllMenusWithoutNav();
+    if(result.data.code === 0) {
+        menuSources.value = result.data.data;
     }
-    return true
 }
 
-const rules = reactive<FormRules>({
-    menuId: [
-        { required: true, message: '请选择对应的菜单!', trigger: 'blur' },
-    ],
-    description: [
-        { required: true, message: '请输入描述信息!', trigger: 'blur' },
-    ],
-    link: [
-        { required: true, message: '请输入导航链接!', trigger: 'blur' },
-    ],
-    openType: [
-        { required: true, message: '请选择打开链接的方式!', trigger: 'blur' },
-    ],
-    title: [
-        { required: true, message: '请输入标题!', trigger: 'blur' },
-    ],
-    order: [
-        { required: true, message: '请输入顺序!', trigger: 'blur' },
-    ]
+onBeforeMount(() => {
+    fetchData();
 })
 
 defineExpose({

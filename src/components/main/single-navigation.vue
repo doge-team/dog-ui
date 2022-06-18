@@ -1,7 +1,7 @@
 <template >
         <div class="single-container el-card is-hover-shadow">
             <div class="icon">
-                <img :src="'http://152.136.215.195:8082/' + navigation.icon" width="32">
+                <img :src="navigation.icon" width="54">
             </div>
             <div class="content">
                 <div class="title overflowClip_1">

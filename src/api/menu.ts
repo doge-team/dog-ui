@@ -5,6 +5,10 @@ export const getAllMenus = () => {
     return Http.get('/menu/listMenusInfo');
 }
 
+export const getAllMenusWithoutNav = () => {
+    return Http.get('/menu/listMenu');
+}
+
 export const addMenu = (menu: Menu) => {
     return Http.post('/menu/insertMenu', menu);
 }

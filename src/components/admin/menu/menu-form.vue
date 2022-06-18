@@ -20,10 +20,12 @@
 </template>
 <script lang="ts" setup>
 import { defualtMenuIcon } from '@/const/const-source';
+import { useFormHooks } from '@/hooks/form';
+import { useUploadHooks } from '@/hooks/upload';
 import { Menu } from '@/models/menu';
 import { Plus } from '@element-plus/icons-vue';
 import { computed, reactive } from '@vue/reactivity';
-import { ElMessage, FormRules, UploadProps } from 'element-plus';
+import { FormRules } from 'element-plus';
 import { PropType, toRefs } from 'vue';
 
 const props = defineProps({
@@ -34,31 +36,10 @@ const { form } = toRefs(props);
 
 const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
 
-const onUploadSucceed:UploadProps['onSuccess'] = ( response,uploadFile) => {
-    console.log('upload response:', response);
-    console.log('uploadFile:', uploadFile);
-    form.value.icon = URL.createObjectURL(uploadFile.raw!)
-}
+const { beforeAvatarUpload, onUploadSucceed } = useUploadHooks(form);
+const { getFormRules } = useFormHooks('menu');
 
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-    if (rawFile.type !== 'image/jpeg') {
-        ElMessage.error('Avatar picture must be JPG format!')
-        return false
-    } else if (rawFile.size / 1024 / 1024 > 2) {
-        ElMessage.error('Avatar picture size can not exceed 2MB!')
-        return false
-    }
-    return true
-}
-
-const rules = reactive<FormRules>({
-    title: [
-        { required: true, message: '请输入标题!', trigger: 'blur' },
-    ],
-    order: [
-        { required: true, message: '请输入顺序!', trigger: 'blur' },
-    ]
-})
+const rules = reactive<FormRules>(getFormRules());
 
 defineExpose({
     form,

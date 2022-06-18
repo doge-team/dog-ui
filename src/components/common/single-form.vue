@@ -19,7 +19,7 @@ const formRef = ref<FormInstance>();
 const onSubmit = async() => {
     const checkResult = await checkForm(formRef);
     if(!checkResult) {
-        return;
+        return null;
     }
     return form.value;
 }

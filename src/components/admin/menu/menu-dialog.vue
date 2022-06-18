@@ -1,6 +1,6 @@
 <template>
-     <el-dialog v-model="shown" title="菜单" @close="onClsoe" v-loading="loading">
-        <div class="menu-dialog-container">
+     <el-dialog v-model="shown" title="菜单" @close="onClsoe">
+        <div class="menu-dialog-container"  v-loading="loading">
             <singleFormVue 
             ref="formComp"
             :form="menuFormComp?.form"
@@ -10,21 +10,20 @@
             </singleFormVue>
         </div>
         <template #footer>
-      <span class="dialog-footer">
-            <el-button type="primary" @click="onSubmit">确认</el-button>
-            <el-button @click="closeDialog">取消</el-button>
-      </span>
-    </template>
+            <span class="dialog-footer">
+                    <el-button type="primary" @click="confirm">确认</el-button>
+                    <el-button @click="closeDialog">取消</el-button>
+            </span>
+        </template>
      </el-dialog>
 </template>
 <script lang="ts" setup>
 import singleFormVue from '@/components/common/single-form.vue';
 import { actionType, defualtMenuIcon } from '@/const/const-source';
+import { useDialogHooks } from '@/hooks/dialog';
 import { Menu } from '@/models/menu';
-import { menuStoreModule } from '@/store/modules/menu/menu';
-import { ElMessage } from 'element-plus';
-import { emit } from 'process';
-import { ref } from 'vue';
+import { menuStoreModule } from '@/store/modules/menu';
+import { Ref, ref } from 'vue';
 import menuFormVue from './menu-form.vue';
 
 
@@ -32,7 +31,7 @@ const formComp = ref(null);
 const menuFormComp = ref(null);
 const shown = ref(false);
 const loading = ref(false);
-let menuAction: actionType = 'new';
+let menuAction: Ref<actionType> = ref('new');
 
 const form = ref({
     icon: defualtMenuIcon,
@@ -40,37 +39,9 @@ const form = ref({
     title: '',
 } as Menu);
 
-const onSubmit = async() => {
-    loading.value = true;
-    const form: Menu = await formComp.value.onSubmit();
-    console.log('submit form:', form);
-    const result = menuAction === 'new' 
-        ? await menuStoreModule.addMenu(form)
-        : await menuStoreModule.updateMenu(form);
-    if(!!result) {
-        ElMessage.success('保存成功');
-        shown.value = false;
-    } else {
-        ElMessage.success('保存失败');
-    }
-    loading.value = false;
-}
-
-const open = (menu) => {
-    shown.value = true;
-    form.value = !!menu ? menu : {...form.value};
-    menuAction = !!menu ? 'edit' : 'new';
-}
-
-const onClsoe = () => {
-    form.value = {} as Menu;
-    formComp.value.clearValidate();
-    menuAction = null;
-}
-
-const closeDialog = () => {
-    shown.value = false;
-}
+const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks(form, formComp, shown, menuAction, loading);
+const confirm = () => onSubmit({ add: (menu) => menuStoreModule.addMenu(menu), update: (menu) => menuStoreModule.updateMenu(menu) });
+const open = (menu: any) => onOpen(menu);
 
 defineExpose({
     open

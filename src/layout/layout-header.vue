@@ -8,7 +8,7 @@
       <el-sub-menu v-if="!!token" index="0">
         <template #title>
           <div class="avatar-container">
-            <el-avatar :size="50" :src="user?.avatar" />
+            <el-avatar :size="50" :src="user?.profilePath" />
           </div>
         </template>
 
@@ -20,18 +20,14 @@
 
 <script lang="ts" setup>
 import { routeWhitList } from "@/const/route";
-import { User } from "@/models/admin/user";
 import router from "@/router";
-import { userStoreModule } from "@/store/modules/user/user";
+import { userStoreModule } from "@/store/modules/user";
+import { getToken, getUser } from "@/utils/cookies";
+import { computed } from "@vue/reactivity";
 import { ElMessage } from "element-plus";
-import { reactive, toRefs } from "vue";
 
-const props = defineProps({ user: User })
-
-const { user } = toRefs(props);
-
-const { token } = reactive({ token: userStoreModule.token });
-
+const user = computed(() => getUser());
+const token = computed(() => getToken());
 const logout = () => {
   userStoreModule.logout();
   if(!routeWhitList.includes(router.currentRoute.value.path)) {
@@ -52,6 +48,10 @@ const logout = () => {
 
     .avatar-container {
       width: 56px;
+
+      .el-avatar {
+        background-color: white;
+      }
     }
 
     .el-menu.el-menu--popup {

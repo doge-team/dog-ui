@@ -6,7 +6,7 @@
       </el-aside>
       <el-container>
         <el-header style="background-color:antiquewhite">
-          <HeaderVue :user="state?.user"></HeaderVue>
+          <HeaderVue></HeaderVue>
         </el-header>
         <el-main style="background-color: rgb(245, 245, 245);">
           <router-view />
@@ -40,9 +40,6 @@ const menus = [
         subRoute: 'navigation'
     }
 ] as Menu[];
-
-const state = ref({user: new User('test','123')})
-state.value.user.avatar = logoUrl
 </script>
 <style lang="less" scoped>
     
