@@ -13,19 +13,13 @@
             </div>
         </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
 import { Navigation } from '@/models/navigation';
+import { PropType, toRefs } from 'vue';
 
-export default defineComponent({
-    components: {
-    },
-    props: {
-        navigation: {
-            type: null as PropType<Navigation>
-        }
-    }
-})
+const props = defineProps({ navigation: Object as PropType<Navigation> });
+const { navigation } = toRefs(props);
+
 </script>
 <style lang="less" scoped>
     .single-container {

@@ -8,27 +8,31 @@
             <SingleNavigationVue 
             v-for="navigation in menu.navigationList" 
             :key="navigation.id" 
-            :navigation="navigation">
+            :navigation="navigation"
+            @Click="onNavClick(navigation)"
+            >
             </SingleNavigationVue>
         </div>
 
     </div>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
+import { openTypeEnum } from "@/const/const-source";
 import { Menu } from "@/models/menu";
-import { defineComponent, PropType } from "vue";
+import { Navigation } from "@/models/navigation";
+import router from "@/router";
+import { PropType, toRefs } from "vue";
 import SingleNavigationVue from './single-navigation.vue';
+const props = defineProps({ menu: Object as PropType<Menu> })
+const { menu } = toRefs(props);
 
-export default defineComponent({
-    components: {
-        SingleNavigationVue
-    },
-    props: {
-        menu: {
-            type: null as PropType<Menu>
-        }
+const onNavClick = (nav: Navigation) => {
+    if(nav.openType === openTypeEnum.TARGET_REDIRECTION) {
+        window.open(nav.link, '_blank');
+    } else {
+        router.push(nav.link);
     }
-})
+}
 </script>
 <style lang="less" scoped>
     .group-container {
