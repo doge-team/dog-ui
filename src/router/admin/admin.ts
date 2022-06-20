@@ -11,9 +11,14 @@ const AdminRouter: Array<RouteRecordRaw> = [
       },
       {
         path: '/admin/menu',
-        name: 'Admin Main',
+        name: 'Admin Menu',
         component: () => import('@/components/admin/menu/menu-manage.vue')
-      }
+      },
+      {
+        path: '/admin/navigation',
+        name: 'Admin Navigation',
+        component: () => import('@/components/admin/navigation/navigation-manage.vue')
+      },
     ]
   }
 ]
