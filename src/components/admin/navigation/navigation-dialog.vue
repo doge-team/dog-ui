@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 import singleFormVue from '@/components/common/single-form.vue';
-import { actionType, defualtMenuIcon } from '@/const/const-source';
+import { actionType, defualtMenuIcon, openTypeEnum, prefixEnum } from '@/const/const-source';
 import { useDialogHooks } from '@/hooks/dialog';
 import { Navigation } from '@/models/navigation';
 import { navigationStoreModule } from '@/store/modules/navigation';
@@ -44,7 +44,15 @@ const form = ref({
 
 defineEmits(['confirm']);
 
-const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks( form, formComp, shown, action, loading);
+const formDataHandler = (form: Navigation) => {
+    const hasPrefix = form.openType === openTypeEnum.TARGET_REDIRECTION;
+    if(!hasPrefix) {
+        return;
+    }
+    form.link = form.prefix + form.link;
+}
+
+const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks( {formRef: form, formDataHandler, formComp, shown, action, loading});
 const confirm = () => onSubmit({ add: (nav) => navigationStoreModule.addNavigation(nav), update: (nav) => navigationStoreModule.updateNavigation(nav) });
 const open = (menu) => onOpen(menu);
 

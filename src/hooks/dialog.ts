@@ -2,10 +2,13 @@ import { actionType } from "@/const/const-source";
 import { ElMessage } from "element-plus";
 import { Ref } from "vue";
 
-export const useDialogHooks = (formRef: Ref<any>, formComp, shown: Ref<boolean>, action: Ref<actionType>, loading: Ref<boolean>) => {
+export const useDialogHooks = ({ formRef, formDataHandler, formComp, shown, loading, action }:{formRef: Ref<any>, formDataHandler?,  formComp: any, shown: Ref<boolean>, action: Ref<actionType>, loading: Ref<boolean>}) => {
     const onSubmit = async( store: { add, update}) => {
         loading.value = true;
         const form = await formComp.value.onSubmit();
+        if(formDataHandler) {
+            formDataHandler(form);
+        }
         if(!form) {
             ElMessage.error('请先完善表单信息!');
             loading.value = false;

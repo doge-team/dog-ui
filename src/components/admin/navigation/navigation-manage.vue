@@ -1,7 +1,7 @@
 <template>
     <div class="menu-container el-card is-hover-shadow" v-loading="loading">
         <div class="actions">
-            <el-select v-model="selectedMenu">
+            <el-select v-model="selectedMenu" filterable value-key="id">
                 <el-option 
                 v-for="menu in menus" 
                 :key="menu.id"
@@ -12,17 +12,27 @@
             <el-button type='primary' @click="openNavigationDialog()">新增导航</el-button>
         </div>
         <el-table :data="navigations" stripe style="width: 100%">
+            <el-table-column prop="order" label="顺序" width="180"/>
             <el-table-column prop="icon" label="图标" width="180">
                 <template #default="scope">
                     <img :src="scope.row.icon" width="24" style="color: white;">
                 </template>
             </el-table-column>
-            <el-table-column prop="title" label="目录名" width="180" />
-            <el-table-column prop="order" label="顺序" width="180"/>
+            <el-table-column prop="title" label="导航名称" width="180" />
+            <el-table-column prop="openType" label="打开方式" width="180">
+                <template #default="scope">
+                    {{ scope.row.openType === openTypeEnums.TARGET_REDIRECTION ? '新页面' : '本页面' }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="link" label="链接">
+                <template #default="scope">
+                    <a href="javascript:void(0)" @click="onNavLinkClick(scope.row)">{{scope.row.link}}</a>
+                </template>
+            </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template #default="scope">
                     <el-button type="primary" :icon="Edit" circle @click="openNavigationDialog(scope.row)"/>
-                    <el-button type="danger" :icon="Delete" circle @click="removeNavigation(scope.row.id)" :loading="removeLoding[scope.row.id]"/>
+                    <el-button type="danger" :icon="Delete" circle @click="removeNavigation(scope.row)" :loading="removeLoding[scope.row.id]"/>
                 </template>
     </el-table-column>
         </el-table>
@@ -32,14 +42,14 @@
 </template>
 <script lang="ts" setup>
 import navigationDialogVue from '@/components/admin/navigation/navigation-dialog.vue';
+import { openTypeEnum } from '@/const/const-source';
+import { useLinkHooks } from '@/hooks/link';
 import { useResultHooks } from '@/hooks/ResultHandler';
 import { Menu } from '@/models/menu';
+import { Navigation } from '@/models/navigation';
 import { menuStoreModule } from '@/store/modules/menu';
 import { navigationStoreModule } from '@/store/modules/navigation';
-import {
-Delete,
-Edit
-} from '@element-plus/icons-vue';
+import { Delete, Edit } from '@element-plus/icons-vue';
 import { computed } from '@vue/reactivity';
 import { isEmpty } from 'lodash';
 import { onBeforeMount, ref } from 'vue';
@@ -53,26 +63,29 @@ const navigations = computed(() => selectedMenu ? selectedMenu.value?.navigation
 
 const loading = computed(() => menuStoreModule.loading);
 const removeLoding = ref([]);
+
+const openTypeEnums = openTypeEnum;
 //#endregion
 
 //#region 方法
 const { handleActionResult } = useResultHooks();
+const { onNavLinkClick } = useLinkHooks();
 
 const fetchData = async() => {
     console.log('fetach')
     if(isEmpty(menuStoreModule.menus)) {
         await menuStoreModule.loadMenus();
-        if(!isEmpty(menus.value)) {
-            selectedMenu.value = menus.value[0];
-        }
+    }
+    if(!isEmpty(menus.value)) {
+        selectedMenu.value = menus.value[0];
     }
 }
 
-const removeNavigation = async(navId) => {
-    removeLoding[navId] = true;
-    const result = await navigationStoreModule.removeNav(navId);
+const removeNavigation = async(nav: Navigation) => {
+    removeLoding[nav.id] = true;
+    const result = await navigationStoreModule.removeNav(nav);
     handleActionResult('删除', result);
-    removeLoding[navId] = false;
+    removeLoding[nav.id] = false;
 }
 
 const openNavigationDialog = (navigation?) => {
@@ -95,6 +108,9 @@ onBeforeMount(async() => {
             display: flex;
             justify-content: flex-end;
             padding: 20px 30px;
+            :not(:last-child) {
+                margin-right: 16px;
+            }
         }
 
         .navgroup {

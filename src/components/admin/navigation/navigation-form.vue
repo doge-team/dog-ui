@@ -1,60 +1,51 @@
 <template>
     <el-form-item prop="menuId" label="菜单">
         <el-select v-model="form.menuId" class="m-2" placeholder="Select" size="large">
-            <el-option
-            v-for="item in menuSources"
-            :key="item.id"
-            :label="item.title"
-            :value="item.id"
-            />
+            <el-option v-for="item in menuSources" :key="item.id" :label="item.title" :value="item.id" />
         </el-select>
     </el-form-item>
     <el-form-item prop="title" label="标题">
         <el-input v-model="form.title"></el-input>
     </el-form-item>
-        <el-form-item prop="description" label="副标题">
+    <el-form-item prop="description" label="副标题">
         <el-input v-model="form.description"></el-input>
     </el-form-item>
     <el-form-item prop="order" label="排序">
         <el-input v-model="form.order" type="number"></el-input>
     </el-form-item>
-    <el-row>
-        <el-col>
-            <el-form-item prop="link" label="链接">
-                <el-input v-model="form.link"></el-input>
-            </el-form-item>
-        </el-col>
-        <el-col>
-            <el-form-item prop="openType" label="打开方式">
-                    <el-select v-model="form.openType" class="m-2" placeholder="Select" size="large">
-                        <el-option
-                            v-for="item in openType"
-                            :key="item.code"
-                            :label="item.description"
-                            :value="item.code"
-                        />
-                    </el-select>
-            </el-form-item>
-        </el-col>
-    </el-row>
+    <el-form-item prop="openType" label="链接打开方式">
+        <el-select v-model="form.openType" class="m-2" placeholder="Select" size="large" @onchange="onOpenTypeChange">
+            <el-option v-for="item in openType" :key="item.code" :label="item.description" :value="item.code" />
+        </el-select>
+    </el-form-item>
+    <el-form-item prop="link" label="链接">
+        <el-input v-model="form.link" v-if="form.openType === openTypeEnums.TARGET_REDIRECTION">
+            <template #prepend>
+                <el-select v-model="form.prefix" class="m-2" size="large" style="width:100px">
+                    <el-option v-for="item in urlPrefixSource" 
+                    :key="item" 
+                    :label="item" 
+                    :value="item"
+                     />
+                </el-select>
+            </template>
+        </el-input>
+    </el-form-item>
 
     <el-form-item prop="icon" label="图标">
-        <el-upload
-            class="avatar-uploader"
-            action="http://152.136.215.195:10000/file/menu/uploadFile"
-            :show-file-list="false"
-            :on-success="onUploadSucceed"
-            :before-upload="beforeAvatarUpload"
-            :headers="myHeaders"
-        >
+        <el-upload class="avatar-uploader" action="http://152.136.215.195:10000/file/menu/uploadFile"
+            :show-file-list="false" :on-success="onUploadSucceed" :before-upload="beforeAvatarUpload"
+            :headers="myHeaders">
             <img v-if="form.icon" :src="src" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <el-icon v-else class="avatar-uploader-icon">
+                <Plus />
+            </el-icon>
         </el-upload>
     </el-form-item>
 </template>
 <script lang="ts" setup>
 import { getAllMenusWithoutNav } from '@/api/menu';
-import { defualtMenuIcon } from '@/const/const-source';
+import { defualtMenuIcon, openTypeEnum, prefixEnum } from '@/const/const-source';
 import { useFormHooks } from '@/hooks/form';
 import { useUploadHooks } from '@/hooks/upload';
 import { Menu } from '@/models/menu';
@@ -65,6 +56,7 @@ import { computed, reactive, ref } from '@vue/reactivity';
 import { FormRules } from 'element-plus';
 import { onBeforeMount, PropType, toRefs } from 'vue';
 
+//#region data
 const props = defineProps({
     form: Object as PropType<Navigation>,
 });
@@ -73,19 +65,29 @@ const { form } = toRefs(props);
 const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
 const menuSources = ref([] as Menu[]);
 const openType = ref([
-    { code: 'TARGET_REDIRECTION', description: '新开页面' },
-    { code: 'TARGET_INLINE', description: '路由跳转' },
-])
-const myHeaders = { token: getToken()};
+    { code: openTypeEnum.TARGET_REDIRECTION, description: '新开页面' },
+    { code: openTypeEnum.TARGET_INLINE, description: '路由跳转' },
+]);
+const urlPrefixSource = ref([prefixEnum.HTTP, prefixEnum.HTTPS])
+const myHeaders = { token: getToken() };
+const openTypeEnums = openTypeEnum;
+//#endregion
 
+//#region method
 const { beforeAvatarUpload, onUploadSucceed } = useUploadHooks(form);
 const { getFormRules } = useFormHooks('navigation');
 
 const rules = reactive<FormRules>(getFormRules());
 
-const fetchData = async() => {
+const onOpenTypeChange = (val) => {
+    if(val === openTypeEnum.TARGET_REDIRECTION) {
+        form.value.prefix = prefixEnum.HTTP;
+    }
+}
+
+const fetchData = async () => {
     const result = await getAllMenusWithoutNav();
-    if(result.data.code === 0) {
+    if (result.data.code === 0) {
         menuSources.value = result.data.data;
     }
 }
@@ -93,6 +95,7 @@ const fetchData = async() => {
 onBeforeMount(() => {
     fetchData();
 })
+//#endregion
 
 defineExpose({
     form,
@@ -102,29 +105,29 @@ defineExpose({
 
 <style lang="less" scoped>
 .avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+    width: 178px;
+    height: 178px;
+    display: block;
 }
 
 .avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
+    border-color: var(--el-color-primary);
 }
 
 .el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
 }
 </style>

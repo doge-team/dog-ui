@@ -5,3 +5,8 @@ export enum openTypeEnum {
     TARGET_REDIRECTION = 'TARGET_REDIRECTION',
     TARGET_INLINE = 'TARGET_INLINE'
 }
+
+export enum prefixEnum {
+    HTTP = 'http://',
+    HTTPS = 'https://'
+}

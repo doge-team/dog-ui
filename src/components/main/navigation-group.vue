@@ -9,7 +9,7 @@
             v-for="navigation in menu.navigationList" 
             :key="navigation.id" 
             :navigation="navigation"
-            @Click="onNavClick(navigation)"
+            @Click="onNavLinkClick(navigation)"
             >
             </SingleNavigationVue>
         </div>
@@ -17,22 +17,15 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { openTypeEnum } from "@/const/const-source";
+import { useLinkHooks } from "@/hooks/link";
 import { Menu } from "@/models/menu";
-import { Navigation } from "@/models/navigation";
-import router from "@/router";
 import { PropType, toRefs } from "vue";
 import SingleNavigationVue from './single-navigation.vue';
 const props = defineProps({ menu: Object as PropType<Menu> })
 const { menu } = toRefs(props);
 
-const onNavClick = (nav: Navigation) => {
-    if(nav.openType === openTypeEnum.TARGET_REDIRECTION) {
-        window.open(nav.link, '_blank');
-    } else {
-        router.push(nav.link);
-    }
-}
+const { onNavLinkClick } = useLinkHooks();
+
 </script>
 <style lang="less" scoped>
     .group-container {

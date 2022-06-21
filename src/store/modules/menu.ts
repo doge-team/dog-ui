@@ -1,9 +1,10 @@
 import { addMenu, getAllMenus, removeMenu, updateMenu } from "@/api/menu"
+import { openTypeEnum, prefixEnum } from "@/const/const-source"
 import { Menu } from "@/models/menu"
 import { Navigation } from "@/models/navigation"
 import { store } from "@/store"
 import { getResultOrDefault } from "@/utils/store"
-import { isEmpty } from "lodash"
+import { cloneDeep, isEmpty } from "lodash"
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { StoreBase } from "./storeBase"
 
@@ -58,6 +59,7 @@ export class MenuStore extends VuexModule implements MenuState {
     @Mutation
     LOAD_ALL_MENU(menus: Menu[]) {
         if(!isEmpty(menus)) {
+            handleMenu(menus);
             this.menus = menus;
         }
     }
@@ -68,7 +70,8 @@ export class MenuStore extends VuexModule implements MenuState {
         if(!findMenu) {
             throw new Error(`LOAD_NAVIGATION error, menuId - ${menuId} not found in store`);
         }
-        findMenu.navigationList = [...navs];
+        handleNavigation(navs);
+        findMenu.navigationList = cloneDeep(navs);
     }
 
     @Mutation
@@ -76,10 +79,26 @@ export class MenuStore extends VuexModule implements MenuState {
         this.loading = loading;
     }
     //#endregion
-
-    //#region Common
-
-    //#endregion
 }
 
 export const menuStoreModule = getModule(MenuStore);
+
+function handleMenu(menus: Menu[]) {
+    const navs = menus.filter(menu => !isEmpty(menu.navigationList)).map(menu => menu.navigationList).flat();
+    handleNavigation(navs);
+}
+
+function handleNavigation(navs: Navigation[]) {
+    if(!isEmpty(navs)) {
+        navs.forEach(nav => {
+            const hasPrefix = nav.openType === openTypeEnum.TARGET_REDIRECTION;
+            if(!hasPrefix) {
+                return;
+            }
+    
+            const index = nav.link.indexOf('//');
+            nav.prefix = index === -1 ? prefixEnum.HTTP : nav.link.substring(0,index + 2);
+            nav.link = index === -1 ? nav.link : nav.link.substring(index + 2, nav.link.length);
+        })
+    }
+}

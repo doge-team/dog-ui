@@ -39,7 +39,7 @@ const form = ref({
     title: '',
 } as Menu);
 
-const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks(form, formComp, shown, menuAction, loading);
+const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks({formRef: form, formComp, shown, action: menuAction, loading});
 const confirm = () => onSubmit({ add: (menu) => menuStoreModule.addMenu(menu), update: (menu) => menuStoreModule.updateMenu(menu) });
 const open = (menu: any) => onOpen(menu);
 

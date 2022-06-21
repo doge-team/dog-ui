@@ -11,6 +11,7 @@
 <script lang="ts" setup>
 import { checkForm } from '@/utils/form';
 import { FormInstance } from 'element-plus';
+import { cloneDeep } from 'lodash';
 import { ref, toRefs } from 'vue';
 const props = defineProps(['form', 'rules'])
 const { form, rules } = toRefs(props);
@@ -21,7 +22,7 @@ const onSubmit = async() => {
     if(!checkResult) {
         return null;
     }
-    return form.value;
+    return cloneDeep(form.value);
 }
 
 const clearValidate = () => {
