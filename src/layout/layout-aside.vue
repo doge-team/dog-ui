@@ -14,7 +14,7 @@
     <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo" text-color="#fff"
       default-active="0">
       <el-menu-item v-for="item in menus" :key="item.id" :index="item?.order.toString()"
-        @click="navagationTo(item?.subRoute)">
+        @click="onMenuClick(item?.subRoute)">
         <template #title>
           <img :src="item.icon" width="24" style="color: white;">
           {{ item.title }}
@@ -31,15 +31,14 @@ import { PropType, toRefs } from 'vue';
 import { Menu } from '@/models/menu';
 import router from '@/router';
 import { logoUrl } from '@/const/const-source';
+import { useLinkHooks } from '@/hooks/link';
 
 const logo = logoUrl;
 const props = defineProps({ menus: Array as PropType<Menu[]> });
 
 const { menus } = toRefs(props);
 
-const navagationTo = (uri: string) => {
-  router.push({ path: `/admin/${uri}` })
-}
+const { onMenuClick } = useLinkHooks();
 
 const navagationToMain = () => {
     router.push({ path: '/main' })

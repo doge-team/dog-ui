@@ -29,7 +29,7 @@ const menus = [
         navigationList: [],
         order: 0,
         title: '菜单管理',
-        subRoute: 'menu'
+        subRoute: '/admin/menu'
     },
     {
         icon: 'none',
@@ -37,7 +37,7 @@ const menus = [
         navigationList: [],
         order: 1,
         title: '导航管理',
-        subRoute: 'navigation'
+        subRoute: '/admin/navigation'
     }
 ] as Menu[];
 </script>

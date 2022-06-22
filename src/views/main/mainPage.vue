@@ -23,13 +23,26 @@ import NavigationVue from '@/components/main/navigation.vue';
 import { getAllMenus } from '@/api/menu';
 import { onBeforeMount, reactive, toRefs } from 'vue';
 import { Menu } from '@/models/menu';
+import { isEmpty } from 'lodash';
 
 const state = reactive({
   menus: [] as Array<Menu>
 })
+
+const handlMenus = (menus: Menu[]) => {
+  if(isEmpty(menus)) {
+    return;
+  }
+  menus.forEach(menu => {
+    menu.subRoute = `#${menu.title}`
+  });
+}
+
 const fetchData = async () => {
     const res = await getAllMenus();
-    state.menus = (res.data.data || []) as Array<Menu>;
+    const menus = res.data.data || [];
+    handlMenus(menus);
+    state.menus = menus as Array<Menu>;
 }
 
 onBeforeMount(() => {

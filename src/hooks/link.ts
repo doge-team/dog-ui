@@ -11,7 +11,32 @@ export const useLinkHooks = () => {
         }
     }
 
+    const onMenuClick = (link: string) => {
+        if(!link) {
+            return;
+        }
+
+        if(link.indexOf('#') > -1) {
+            gotoAnchor(link);
+        } else {
+            router.push(link);
+        }
+    }
+
+    const gotoAnchor = (anchor: string) => {
+        const el = document.getElementById(anchor);
+        if(!el) {
+            return;
+        }
+        el.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+        });
+    }
+
     return {
-        onNavLinkClick
+        onNavLinkClick,
+        onMenuClick
     }
 }

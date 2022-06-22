@@ -1,6 +1,6 @@
 <template>
     <div class="group-container ">
-        <h4 class="group-title">
+        <h4 class="group-title" :id="'#' + menu?.title">
             <img :src="menu.icon" width="24">
             {{ menu.title }}
         </h4>
@@ -31,6 +31,10 @@ const { onNavLinkClick } = useLinkHooks();
     .group-container {
         display: flex;
         flex-direction: column;
+
+        .group-title {
+            line-height: 24px;
+        }
 
         .group-content {
             display: flex;
