@@ -99,6 +99,7 @@ function handleNavigation(navs: Navigation[]) {
             const index = nav.link.indexOf('//');
             nav.prefix = index === -1 ? prefixEnum.HTTP : nav.link.substring(0,index + 2);
             nav.link = index === -1 ? nav.link : nav.link.substring(index + 2, nav.link.length);
+            console.log(`nav:${nav.title},prefix:${nav.prefix},link:${nav.prefix}\n`)
         })
     }
 }

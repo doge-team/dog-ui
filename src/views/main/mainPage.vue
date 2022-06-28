@@ -17,13 +17,13 @@
 </template>
 
 <script lang="ts" setup>
+import NavigationVue from '@/components/main/navigation.vue';
 import AsideVue from '@/layout/layout-aside.vue';
 import HeaderVue from '@/layout/layout-header.vue';
-import NavigationVue from '@/components/main/navigation.vue';
-import { getAllMenus } from '@/api/menu';
-import { onBeforeMount, reactive, toRefs } from 'vue';
 import { Menu } from '@/models/menu';
+import { menuStoreModule } from '@/store/modules/menu';
 import { isEmpty } from 'lodash';
+import { onBeforeMount, reactive, toRefs } from 'vue';
 
 const state = reactive({
   menus: [] as Array<Menu>
@@ -39,8 +39,7 @@ const handlMenus = (menus: Menu[]) => {
 }
 
 const fetchData = async () => {
-    const res = await getAllMenus();
-    const menus = res.data.data || [];
+    const menus = await menuStoreModule.loadMenus();
     handlMenus(menus);
     state.menus = menus as Array<Menu>;
 }
