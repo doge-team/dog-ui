@@ -3,6 +3,7 @@
     class="el-menu-demo"
     mode="horizontal"
     :ellipsis="false"
+    :router="true"
   >
     <div class="flex-grow" />
       <el-sub-menu v-if="!!token" index="0">
@@ -12,7 +13,7 @@
           </div>
         </template>
 
-        <el-menu-item index="0-1" ><router-link to="/admin">管理系统</router-link> </el-menu-item>
+        <el-menu-item index="/admin" >管理系统</el-menu-item>
         <el-menu-item index="0-2" @click="logout">退出登录</el-menu-item>
       </el-sub-menu>
   </el-menu>
