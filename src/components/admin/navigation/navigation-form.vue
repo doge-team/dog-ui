@@ -13,14 +13,9 @@
     <el-form-item prop="order" label="排序">
         <el-input v-model="form.order" type="number"></el-input>
     </el-form-item>
-    <el-form-item prop="openType" label="链接打开方式">
-        <el-select v-model="form.openType" class="m-2" placeholder="Select" size="large" @onchange="onOpenTypeChange">
-            <el-option v-for="item in openType" :key="item.code" :label="item.description" :value="item.code" />
-        </el-select>
-    </el-form-item>
     <el-form-item prop="link" label="链接">
-        <el-input v-model="form.link" v-if="form.openType === openTypeEnums.TARGET_REDIRECTION">
-            <template #prepend>
+        <el-input v-model="form.link">
+            <template #prepend >
                 <el-select v-model="form.prefix" class="m-2" size="large" style="width:100px">
                     <el-option v-for="item in urlPrefixSource" 
                     :key="item" 
@@ -45,7 +40,7 @@
 </template>
 <script lang="ts" setup>
 import { getAllMenusWithoutNav } from '@/api/menu';
-import { defualtMenuIcon, openTypeEnum, prefixEnum } from '@/const/const-source';
+import { defualtMenuIcon, prefixEnum } from '@/const/const-source';
 import { useFormHooks } from '@/hooks/form';
 import { useUploadHooks } from '@/hooks/upload';
 import { Menu } from '@/models/menu';
@@ -64,13 +59,8 @@ const props = defineProps({
 const { form } = toRefs(props);
 const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
 const menuSources = ref([] as Menu[]);
-const openType = ref([
-    { code: openTypeEnum.TARGET_REDIRECTION, description: '新开页面' },
-    { code: openTypeEnum.TARGET_INLINE, description: '路由跳转' },
-]);
 const urlPrefixSource = ref([prefixEnum.HTTP, prefixEnum.HTTPS])
 const myHeaders = { token: getToken() };
-const openTypeEnums = openTypeEnum;
 //#endregion
 
 //#region method
@@ -78,12 +68,6 @@ const { beforeAvatarUpload, onUploadSucceed } = useUploadHooks(form);
 const { getFormRules } = useFormHooks('navigation');
 
 const rules = reactive<FormRules>(getFormRules());
-
-const onOpenTypeChange = (val) => {
-    if(val === openTypeEnum.TARGET_REDIRECTION) {
-        form.value.prefix = prefixEnum.HTTP;
-    }
-}
 
 const fetchData = async () => {
     const result = await getAllMenusWithoutNav();

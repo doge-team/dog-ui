@@ -1,26 +1,22 @@
 <template>
-     <el-dialog v-model="shown" title="导航" @close="onClsoe">
-        <div class="menu-dialog-container"  v-loading="loading">
-            <singleFormVue 
-            ref="formComp" 
-            @confirm="$emit('confirm', $event.target.value)"
-            :form="navFormComp?.form"
-            :rules="navFormComp?.rules"
-            >
+    <el-dialog v-model="shown" title="导航" @close="onClsoe">
+        <div class="menu-dialog-container" v-loading="loading">
+            <singleFormVue ref="formComp" @confirm="$emit('confirm', $event.target.value)" :form="navFormComp?.form"
+                :rules="navFormComp?.rules">
                 <navigationFormVue ref="navFormComp" :form="form"></navigationFormVue>
             </singleFormVue>
         </div>
         <template #footer>
             <span class="dialog-footer">
-                    <el-button type="primary" @click="confirm">确认</el-button>
-                    <el-button @click="closeDialog">取消</el-button>
+                <el-button type="primary" @click="confirm">确认</el-button>
+                <el-button @click="closeDialog">取消</el-button>
             </span>
         </template>
-     </el-dialog>
+    </el-dialog>
 </template>
 <script lang="ts" setup>
 import singleFormVue from '@/components/common/single-form.vue';
-import { actionType, defualtMenuIcon, openTypeEnum, prefixEnum } from '@/const/const-source';
+import { actionType, defualtMenuIcon } from '@/const/const-source';
 import { useDialogHooks } from '@/hooks/dialog';
 import { Navigation } from '@/models/navigation';
 import { navigationStoreModule } from '@/store/modules/navigation';
@@ -37,7 +33,6 @@ const form = ref({
     icon: defualtMenuIcon,
     description: '',
     link: '',
-    openType: '',
     order: 0,
     title: ''
 } as Navigation);
@@ -45,22 +40,16 @@ const form = ref({
 defineEmits(['confirm']);
 
 const formDataHandler = (form: Navigation) => {
-    const hasPrefix = form.openType === openTypeEnum.TARGET_REDIRECTION;
-    if(!hasPrefix) {
-        return;
-    }
     form.link = form.prefix + form.link;
 }
 
-const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks( {formRef: form, formDataHandler, formComp, shown, action, loading});
+const { onSubmit, onOpen, onClsoe, closeDialog } = useDialogHooks({ formRef: form, formDataHandler, formComp, shown, action, loading });
 const confirm = () => onSubmit({ add: (nav) => navigationStoreModule.addNavigation(nav), update: (nav) => navigationStoreModule.updateNavigation(nav) });
 const open = (menu) => onOpen(menu);
 
 defineExpose({
     open
 });
-
 </script>
 <style lang="less" scoped>
-
 </style>
