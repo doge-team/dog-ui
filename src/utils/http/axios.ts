@@ -14,7 +14,7 @@ import { BaseUrlConfig } from '../../config'
 console.log('env' + process.env.NODE_ENV);
 axios.defaults.baseURL = BaseUrlConfig[process.env.NODE_ENV].baseUrl
 // 携带 cookie，对目前的项目没有什么作用，因为我们是 token 鉴权
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 // 请求头，headers 信息
 // axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 // axios.defaults.headers['token'] = localGet('token') || ''
