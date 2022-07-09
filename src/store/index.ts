@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-01-08 20:46:07
  */
 import { createStore, createLogger, Store } from 'vuex'
-import {  UserState } from './modules/user/user'
+import {  UserState } from './modules/user'
 // import createPersistedState from 'vuex-persistedstate'
 
 export interface RootState {

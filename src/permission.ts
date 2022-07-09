@@ -3,10 +3,9 @@ import 'nprogress/nprogress.css'
 import router from '@/router'
 import { RouteLocationNormalized } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { userStoreModule } from './store/modules/user/user'
+import { userStoreModule } from './store/modules/user'
+import { routeWhitList } from './const/route'
 NProgress.configure({ showSpinner: false })
-
-const whitList = ['/login', '/main']
 
 router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized, next: any) => {
   // Start progress bar
@@ -19,7 +18,7 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
     }
     next()
   } else {
-    if(whitList.indexOf(to.path) > -1) {
+    if(routeWhitList.indexOf(to.path) > -1) {
       next();
     } else {
       ElMessage.error('你没有权限访问此页面，请先登录')
@@ -31,6 +30,5 @@ router.beforeEach(async(to: RouteLocationNormalized, _: RouteLocationNormalized,
 })
 
 router.afterEach((to: RouteLocationNormalized) => {
-  console.log(to)
   NProgress.done()
 })

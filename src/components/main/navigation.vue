@@ -8,24 +8,15 @@
         </NavigationGroupVue>
     </div>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import { Menu } from "@/models/menu";
-import { defineComponent, PropType } from "vue";
+import { PropType, toRefs } from "vue";
 import NavigationGroupVue from './navigation-group.vue';
 
-export default defineComponent({
-    components: {
-        NavigationGroupVue
-    },
-    props: {
-        menus: {
-        type: [] as PropType<Array<Menu>>,
-        default: () => []
-        }
-    }
-})
+const props = defineProps({ menus: Array as PropType<Array<Menu>> });
+const { menus } = toRefs(props);
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .navigation-container {
         display: flex;
         flex-direction: column;

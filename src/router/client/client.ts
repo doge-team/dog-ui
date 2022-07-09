@@ -3,7 +3,7 @@ const ClientRouter: Array<RouteRecordRaw> = [
   {
     path: '/main',
     name: 'Main Client',
-    component: () => import('@/views/main/main.vue')
+    component: () => import('@/views/main/mainPage.vue')
   },
   {
     path: '',

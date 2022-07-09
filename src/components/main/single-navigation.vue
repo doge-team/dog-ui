@@ -1,7 +1,7 @@
 <template >
         <div class="single-container el-card is-hover-shadow">
             <div class="icon">
-                <img :src="'http://152.136.215.195:8082/' + navigation.icon" width="32">
+                <img :src="navigation.icon" width="54">
             </div>
             <div class="content">
                 <div class="title overflowClip_1">
@@ -13,23 +13,15 @@
             </div>
         </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import SectionVue from '../common/section.vue';
+<script lang="ts" setup>
 import { Navigation } from '@/models/navigation';
+import { PropType, toRefs } from 'vue';
 
-export default defineComponent({
-    components: {
-        SectionVue
-    },
-    props: {
-        navigation: {
-            type: null as PropType<Navigation>
-        }
-    }
-})
+const props = defineProps({ navigation: Object as PropType<Navigation> });
+const { navigation } = toRefs(props);
+
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .single-container {
         display: flex;
         cursor: pointer;

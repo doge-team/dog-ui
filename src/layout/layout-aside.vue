@@ -1,53 +1,104 @@
-<!--
- * @Author: qiuzijie 771447612@qq.com
- * @Date: 2022-05-27 16:28:28
- * @LastEditors: qiuzijie 771447612@qq.com
- * @LastEditTime: 2022-06-01 14:04:54
- * @FilePath: \dog-ui\src\layout\layout-aside.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-      <h5 class="mb-2">这里放图片和logo</h5>
-      <el-menu
-        active-text-color="#ffd04b"
-        background-color="#545c64"
-        class="el-menu-vertical-demo"
-        text-color="#fff"
-      >
-        <el-menu-item v-for="item in menus" :key="item.id" :index="item.order">
-          <template #title>
-            <img :src="item.icon" width="24" style="color: white;">
-              {{item.title}}
-            <span></span>
-          </template>
-        </el-menu-item>
-      </el-menu>
+  <div class="aside-container">
+    <h5 class="mb-2" @click="navagationToMain">
+      <div class="logo-container">
+        <div class="logo">
+          <el-avatar :size="50" :src="logo" style="background-color: #545c64;"/>
+        </div>
+        <div class="logo-word">
+          <p class="main-title">Doge小站</p>
+          <p class="sub-title">思想无极限</p>
+        </div>
+      </div>
+    </h5>
+    <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo" text-color="#fff"
+      default-active="0">
+      <el-menu-item v-for="item in menus" :key="item.id" :index="item?.order.toString()"
+        @click="onMenuClick(item?.subRoute)">
+        <template #title>
+          <img :src="item.icon" width="24" style="color: white;">
+          {{ item.title }}
+          <span></span>
+        </template>
+      </el-menu-item>
+    </el-menu>
+  </div>
+
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+import { PropType, toRefs } from 'vue';
 import { Menu } from '@/models/menu';
+import router from '@/router';
+import { logoUrl } from '@/const/const-source';
+import { useLinkHooks } from '@/hooks/link';
 
-export default defineComponent({
-  props: {
-    menus: {
-      type: [] as PropType<Array<Menu>>,
-      default: () => []
-    }
-  }
-})
+const logo = logoUrl;
+const props = defineProps({ menus: Array as PropType<Menu[]> });
+
+const { menus } = toRefs(props);
+
+const { onMenuClick } = useLinkHooks();
+
+const navagationToMain = () => {
+    router.push({ path: '/main' })
+}
+
 </script>
 
-<style >
-  .el-menu--vertical {
-    height: calc(100% - 61px);
-    border: 0;
-    padding: 0 20px;
+<style scoped lang="less">
+.el-menu--vertical {
+  border: 0;
+  padding: 0 20px;
+}
+
+.aside-container {
+  background-color: #545c64;
+  height: 100%;
+
+  li.el-menu-item {
+    border-bottom: 1px solid #606d7a;
+  }
+}
+
+.mb-2 {
+  color: white;
+  margin: 0;
+  height: 61px;
+  padding-top: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #606d7a;
+  cursor: pointer;
+
+  .logo-container {
+    padding-left: 32px;
+
+    * {
+      font-family: cartoon;
+    }
+
+    display: flex;
+    .logo-word {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 8px;
+
+      p {
+        margin: 0;
+      }
+
+      .main-title {
+        font-size: 28px;
+      }
+
+      .sub-title {
+        font-size: 15px;
+        margin-top: 8px;
+      }
+    }
   }
 
-  .mb-2 {
-    background-color: #545c64;
-    margin: 0;
-    height: 61px;
-  }
+}
 </style>

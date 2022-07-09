@@ -6,9 +6,14 @@
  * @LastEditTime: 2020-12-17 17:23:14
  */
 import Keys from '@/const/key'
+import { User } from '@/models/admin/user'
 import Cookies from 'js-cookie'
 
 
-export const getToken = () => Cookies.get(Keys.tokenKey)
-export const setToken = (token: string) => Cookies.set(Keys.tokenKey, token)
-export const removeToken = () => Cookies.remove(Keys.tokenKey)
+export const getToken = () => localStorage.getItem(Keys.tokenKey)
+export const setToken = (token: string) => localStorage.setItem(Keys.tokenKey, token)
+export const removeToken = () => localStorage.removeItem(Keys.tokenKey)
+
+export const getUser = () => JSON.parse(localStorage.getItem(Keys.userKey)) as User
+export const setUser = (user: User) => localStorage.setItem(Keys.userKey, JSON.stringify(user))
+export const removeUser = () => localStorage.removeItem(Keys.userKey)

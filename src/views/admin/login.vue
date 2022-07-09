@@ -1,47 +1,49 @@
 <template>
-
-  <div class="container">
-      <div class="tit">登录</div>
-      <!-- <input v-model="account" type="text" placeholder="账号">
-      <input v-model="passwd" type="password" placeholder="密码"> -->
-      <el-form 
-      :model="form" 
-      :rules="rules"
-      ref="formRef"
-      >
-          <el-form-item  prop="account">
-              <el-input placeholder="账号" v-model="form.account"></el-input>
-          </el-form-item>
-          <el-form-item  prop="passwd">
-              <el-input placeholder="密码" v-model="form.passwd" show-password></el-input>
-          </el-form-item>
-      </el-form>
-      <button @click="submit" v-loading="loading">登录</button>
-      <span>没有账号？<a href="#">去注册</a> </span>
-  </div>
-  <div class="square">
-      <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-      </ul>
-  </div>
-  <div class="circle">
-      <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-      </ul>
-  </div>
+    <div class="login-container">
+        <div class="container">
+            <div class="tit">登录</div>
+            <!-- <input v-model="account" type="text" placeholder="账号">
+            <input v-model="passwd" type="password" placeholder="密码"> -->
+            <el-form 
+            :model="form" 
+            :rules="rules"
+            ref="formRef"
+            >
+                <el-form-item  prop="account">
+                    <el-input placeholder="账号" v-model="form.account"></el-input>
+                </el-form-item>
+                <el-form-item  prop="passwd">
+                    <el-input placeholder="密码" v-model="form.passwd" show-password @keyup.enter="submit"></el-input>
+                </el-form-item>
+            </el-form>
+            <button @click="submit" v-loading="loading">登录</button>
+            <span>没有账号？<a href="#">去注册</a> </span>
+        </div>
+        <div class="square">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="circle">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
 </template>
 <script lang="ts" setup>
 import { User } from '@/models/admin/user';
 import router from '@/router';
-import { userStoreModule } from '@/store/modules/user/user';
+import { userStoreModule } from '@/store/modules/user';
+import { checkForm } from '@/utils/form';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 
@@ -62,12 +64,8 @@ const form = reactive({
 
 const formRef = ref<FormInstance>();
 
-const checkForm = async() => {
-    const result = await formRef.value.validate();
-    return result.valueOf();
-}
 const submit = async() => {
-    const checkResult = await checkForm();
+    const checkResult = await checkForm(formRef);
     if(!checkResult) {
         return;
     }
@@ -75,9 +73,9 @@ const submit = async() => {
     loading.value = true;
     const user = new User(form.account,form.passwd);
     var result = await userStoreModule.login(user);
-    console.log('login result:', result);
     loading.value = false;
     if(!!result) {
+        ElMessage.success('登陆成功,欢迎来到dog系统')
         router.push({
             path: '/admin'
         });
@@ -86,13 +84,8 @@ const submit = async() => {
     }
 }
 </script>
-<style lang="less">
-*{
-    /*初始化*/
-    margin: 0;
-    padding: 0;
-}
-#app{
+<style lang="less" scoped>
+.login-container{
     height: 100vh;
     /*弹性布局居中*/
     display: flex;
@@ -123,15 +116,6 @@ const submit = async() => {
     font-size: 26px;
     margin: 65px auto 70px auto;
 }
-// .container input{
-//     width: 280px;
-//     height: 30px;
-//     text-indent: 8px;
-//     border: none;
-//     border-bottom: 1px solid #ddd;
-//     outline: none;
-//     margin: 12px auto;
-// }
 
 form.el-form {
     width: 80%;
