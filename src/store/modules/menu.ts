@@ -91,11 +91,6 @@ function handleMenu(menus: Menu[]) {
 function handleNavigation(navs: Navigation[]) {
     if(!isEmpty(navs)) {
         navs.forEach(nav => {
-            const hasPrefix = nav.openType === openTypeEnum.TARGET_REDIRECTION;
-            if(!hasPrefix) {
-                return;
-            }
-    
             const index = nav.link.indexOf('//');
             nav.prefix = index === -1 ? prefixEnum.HTTP : nav.link.substring(0,index + 2);
             nav.link = index === -1 ? nav.link : nav.link.substring(index + 2, nav.link.length);

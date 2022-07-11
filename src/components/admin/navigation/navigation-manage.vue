@@ -42,7 +42,7 @@
 </template>
 <script lang="ts" setup>
 import navigationDialogVue from '@/components/admin/navigation/navigation-dialog.vue';
-import { openTypeEnum } from '@/const/const-source';
+import { openTypeEnum, prefixEnum } from '@/const/const-source';
 import { useLinkHooks } from '@/hooks/link';
 import { useResultHooks } from '@/hooks/ResultHandler';
 import { Menu } from '@/models/menu';
@@ -72,7 +72,6 @@ const { handleActionResult } = useResultHooks();
 const { onNavLinkClick } = useLinkHooks();
 
 const fetchData = async() => {
-    console.log('fetach')
     if(isEmpty(menuStoreModule.menus)) {
         await menuStoreModule.loadMenus();
     }
@@ -89,7 +88,9 @@ const removeNavigation = async(nav: Navigation) => {
 }
 
 const openNavigationDialog = (navigation?) => {
-    navigationDialog.value.open(navigation);
+    // 对于新增打开弹窗，将menuid传进去
+    const navParam = navigation ?? { menuId: selectedMenu.value.id, prefix: prefixEnum.HTTP } as Navigation;
+    navigationDialog.value.open(navParam);
 }
 //#endregion
 
