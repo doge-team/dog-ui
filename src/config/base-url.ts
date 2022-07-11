@@ -8,7 +8,7 @@
  */
 export const BaseUrlConfig = {
     development: {
-      baseUrl: 'http://152.136.215.195:10000/' // 测试接口域名
+      baseUrl: 'https://dogedoge.site/' // 测试接口域名
     },
     beta: {
       baseUrl: 'http://xxx.xxx.xxx.xxx:xxxx' // 测试接口域名
@@ -17,6 +17,6 @@ export const BaseUrlConfig = {
       baseUrl: 'http://xxx.xxx.xxx.xxx:xxxx' // 正式接口域名
     },
     production: {
-      baseUrl: 'http://152.136.215.195:10000/'
+      baseUrl: 'https://dogedoge.site/'
     }
   }
