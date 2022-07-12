@@ -23,3 +23,5 @@
 **/values.dev.yaml
 README.md
 /node_modules
+/dist
+./github
