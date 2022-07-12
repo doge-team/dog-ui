@@ -14,7 +14,7 @@ jobs:
       - uses: komorebitech/read-files-action@v1.5
         id: read_migration_files
         with:
-          files: '["./version.txt"]'
+          files: '["./package.json"]'
           pattern: 'version'
       - name: prepare version
         id: SET_VERSION
