@@ -1,0 +1,40 @@
+name: build and deploy
+on: 
+  push:
+    branches:
+      - release
+    paths:
+      - package.json
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: komorebitech/read-files-action@v1.5
+        id: read_migration_files
+        with:
+          files: '["./version.txt"]'
+          pattern: 'version'
+      - name: prepare version
+        id: SET_VERSION
+        run: |
+          echo VERSION=$(echo "${{ steps.read_migration_files.outputs.content }}" | cat package.json | sed -n "/\"version/p" | cut -d "\"" -f4 | awk '$1=$1') >> $GITHUB_ENV
+      - name: push docker
+        run: |
+          docker build -t ${{ secrets.REPOSITORY }}:${{ env.VERSION }} .
+          docker push ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+      - name: check container exists
+        id: container_exits
+        run: echo '::set-output name=container::$(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p")'
+      - name: echo container_exits
+        run: echo ${{ steps.container_exits.outputs.container }}
+      - name: remove container
+        if: ${{ steps.container_exits.outputs.container }} == "${{ secrets.CONTAINER }}"
+        run: |
+          docker container stop ${{ secrets.CONTAINER }}
+          docker container rm ${{ secrets.CONTAINER }}
+      - name: Deploy
+        run: |
+          docker pull ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+          docker run -d --name ${{ secrets.CONTAINER }} -p 8080:80 ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
