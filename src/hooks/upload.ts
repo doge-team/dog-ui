@@ -28,10 +28,6 @@ export const useUploadHooks = (form: Ref<any>) => {
         }
     }
 
-    // const onProgress:UploadProps['onProgress'] = (event, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-    //     event.
-    // }
-
     return {
         beforeAvatarUpload,
         onUploadSucceed

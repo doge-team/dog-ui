@@ -25,7 +25,7 @@
                     <el-button type="primary" :icon="Edit" circle @click="openMenuDialog(scope.row)"/>
                     <el-button type="danger" :icon="Delete" circle @click="removeMenu(scope.row.id)" :loading='removeLoding[scope.row.id]'/>
                 </template>
-    </el-table-column>
+            </el-table-column>
         </el-table>
     </div>
 

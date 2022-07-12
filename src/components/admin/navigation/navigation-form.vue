@@ -28,26 +28,17 @@
     </el-form-item>
 
     <el-form-item prop="icon" label="图标">
-        <el-upload class="avatar-uploader" action="http://152.136.215.195:10000/file/menu/uploadFile"
-            :show-file-list="false" :on-success="onUploadSucceed" :before-upload="beforeAvatarUpload"
-            :headers="myHeaders">
-            <img v-if="form.icon" :src="src" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon">
-                <Plus />
-            </el-icon>
-        </el-upload>
+        <dogeUpload :form="form" uploadFolder="navigation"></dogeUpload>
     </el-form-item>
 </template>
 <script lang="ts" setup>
 import { getAllMenusWithoutNav } from '@/api/menu';
-import { defualtMenuIcon, prefixEnum } from '@/const/const-source';
+import dogeUpload from '@/components/common/doge-upload.vue';
+import { prefixEnum } from '@/const/const-source';
 import { useFormHooks } from '@/hooks/form';
-import { useUploadHooks } from '@/hooks/upload';
 import { Menu } from '@/models/menu';
 import { Navigation } from '@/models/navigation';
-import { getToken } from '@/utils/cookies';
-import { Plus } from '@element-plus/icons-vue';
-import { computed, reactive, ref } from '@vue/reactivity';
+import { reactive, ref } from '@vue/reactivity';
 import { FormRules } from 'element-plus';
 import { onBeforeMount, PropType, toRefs } from 'vue';
 
@@ -57,14 +48,11 @@ const props = defineProps({
 });
 
 const { form } = toRefs(props);
-const src = computed(() => !!form ? form.value.icon : defualtMenuIcon);
 const menuSources = ref([] as Menu[]);
 const urlPrefixSource = ref([prefixEnum.HTTP, prefixEnum.HTTPS])
-const myHeaders = { token: getToken() };
 //#endregion
 
 //#region method
-const { beforeAvatarUpload, onUploadSucceed } = useUploadHooks(form);
 const { getFormRules } = useFormHooks('navigation');
 
 const rules = reactive<FormRules>(getFormRules());

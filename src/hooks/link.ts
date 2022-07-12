@@ -4,7 +4,8 @@ import router from "@/router";
 
 export const useLinkHooks = () => {
     const onNavLinkClick = (nav: Navigation) => {
-        router.push(nav.link);
+        console.log(nav.link)
+        window.open(nav.prefix + nav.link, '_blank');
     }
 
     const onMenuClick = (link: string) => {
