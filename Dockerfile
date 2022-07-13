@@ -1,9 +1,9 @@
 FROM node:16-alpine as builder
 WORKDIR /build
 COPY . .
-RUN npm run build
+RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
+    && cnpm install \
+    && npm run build
 
-FROM nginx 
-COPY --from=builder ./dist/ /usr/share/nginx/html
-
-COPY ./default.conf /etc/nginx/conf.d
+FROM nginx:1.22.0-alpine
+COPY --from=builder /build/dist/ /usr/share/nginx/html
