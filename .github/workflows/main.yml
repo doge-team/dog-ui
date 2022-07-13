@@ -7,7 +7,7 @@ on:
       - package.json
 jobs:
   deploy:
-    runs-on: doge-hosted
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v2
