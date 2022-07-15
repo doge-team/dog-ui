@@ -32,7 +32,7 @@ jobs:
       - name: echo container_exits
         run: echo ${{ steps.container_exits.outputs.container }}
       - name: remove container
-        if: ${{ steps.container_exits.outputs.container }} == 'dog-ui'
+        if: ("${{ steps.container_exits.outputs.container }} " == "${{ secrets.CONTAINER }} ")
         run: |
           docker container stop ${{ secrets.CONTAINER }}
           docker container rm ${{ secrets.CONTAINER }}
