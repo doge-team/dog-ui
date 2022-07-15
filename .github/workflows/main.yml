@@ -37,4 +37,4 @@ jobs:
       - name: Deploy
         run: |
           docker pull ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
-          docker run -d --restart=always --name ${{ secrets.CONTAINER }} -p 8080:80 ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+          docker run -d --restart=always --name ${{ secrets.CONTAINER }} -p 8080:80 --location type=bind,source=/usr/local/nginx/conf /etc/nginx ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
