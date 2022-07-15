@@ -22,7 +22,7 @@ jobs:
           echo {{ env.REP_CONTAINER }}
           echo '${{ env.EXISTS_CONTAINER }}' == '${{ env.REP_CONTAINER }}'
       - name: remove container
-        if: ('${{ env.EXISTS_CONTAINER }}' == '${{ env.REP_CONTAINER }}')
+        if: (${{ env.EXISTS_CONTAINER }} == ${{ env.REP_CONTAINER }})
         run: |
           docker container stop ${{ secrets.CONTAINER }}
           docker container rm ${{ secrets.CONTAINER }}
