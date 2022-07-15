@@ -9,6 +9,23 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          clean: false
+      - uses: komorebitech/read-files-action@v1.5
+        id: read_migration_files
+        with:
+          files: '["./package.json"]'
+          pattern: 'version'
+      - name: prepare version
+        id: SET_VERSION
+        run: |
+          echo VERSION=$(echo "${{ steps.read_migration_files.outputs.content }}" | cat package.json | sed -n "/\"version/p" | cut -d "\"" -f4 | awk '$1=$1') >> $GITHUB_ENV
+      - name: push docker
+        run: |
+          docker build -t ${{ secrets.REPOSITORY }}:${{ env.VERSION }} .
+          docker push ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
       - name: set container
         run: |
           echo REP_CONTAINER='${{ secrets.CONTAINER }}1' >> $GITHUB_ENV
@@ -16,11 +33,6 @@ jobs:
         id: container_exits
         run: |
           echo EXISTS_CONTAINER=$(echo $(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p" | awk '$1=$1')1) >> $GITHUB_ENV
-      - name: echo container_exits
-        run: |
-          echo ${{ env.EXISTS_CONTAINER }}
-          echo {{ env.REP_CONTAINER }}
-          echo '${{ env.EXISTS_CONTAINER }}' == '${{ env.REP_CONTAINER }}'
       - name: remove container
         if: ${{ env.EXISTS_CONTAINER == env.REP_CONTAINER }}
         run: |
