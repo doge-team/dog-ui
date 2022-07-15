@@ -26,14 +26,17 @@ jobs:
         run: |
           docker build -t ${{ secrets.REPOSITORY }}:${{ env.VERSION }} .
           docker push ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+      - name: set container
+        run: |
+          echo REP_CONTAINER=${{ secrets.CONTAINER }} >> $GITHUB_ENV
       - name: check container exists
         id: container_exits
         run: |
-          echo CONTAINER=$(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p" | awk '$1=$1') >> $GITHUB_ENV
+          echo EXISTS_CONTAINER=$(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p" | awk '$1=$1') >> $GITHUB_ENV
       - name: echo container_exits
         run: echo ${{ env.CONTAINER }}1
       - name: remove container
-        if: ('${{ env.CONTAINER }}' == ${{ secrets.CONTAINER }})
+        if: ('${{ env.EXISTS_CONTAINER }}' == ${{ env.REP_CONTAINER }})
         run: |
           docker container stop ${{ secrets.CONTAINER }}
           docker container rm ${{ secrets.CONTAINER }}
