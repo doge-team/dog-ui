@@ -24,6 +24,7 @@ jobs:
           echo VERSION=$(echo "${{ steps.read_migration_files.outputs.content }}" | cat package.json | sed -n "/\"version/p" | cut -d "\"" -f4 | awk '$1=$1') >> $GITHUB_ENV
       - name: push docker
         run: |
+          docker login
           docker build -t ${{ secrets.REPOSITORY }}:${{ env.VERSION }} .
           docker push ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
       - name: check container exists
