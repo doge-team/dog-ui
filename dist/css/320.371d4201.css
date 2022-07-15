@@ -1,0 +1,1 @@
+.not-found-container{height:100vh;display:flex;width:80%;margin:0 auto;padding-top:200px}.not-found-container .gif{background-image:url(http://152.136.215.195:8082/404.gif);background-repeat:no-repeat;flex:0 1 600px}.not-found-container .tips{flex:0 1 30%;display:flex;flex-direction:column;align-items:flex-end}
