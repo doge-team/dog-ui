@@ -34,7 +34,10 @@ jobs:
         run: |
           echo EXISTS_CONTAINER=echo $(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p" | awk '$1=$1')1 >> $GITHUB_ENV
       - name: echo container_exits
-        run: echo ${{ env.CONTAINER }}1
+        run: |
+          echo ${{ env.EXISTS_CONTAINER }}
+          echo {{ env.REP_CONTAINER }})
+          echo ('${{ env.EXISTS_CONTAINER }}' == ${{ env.REP_CONTAINER }})
       - name: remove container
         if: ('${{ env.EXISTS_CONTAINER }}' == ${{ env.REP_CONTAINER }})
         run: |
