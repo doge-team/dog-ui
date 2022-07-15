@@ -33,7 +33,7 @@ jobs:
       - name: echo container_exits
         run: echo ${{ env.CONTAINER }}1
       - name: remove container
-        if: ('${{ env.CONTAINER }}' == '${{ secrets.CONTAINER }}')
+        if: ('${{ env.CONTAINER }}' == ${{ secrets.CONTAINER }})
         run: |
           docker container stop ${{ secrets.CONTAINER }}
           docker container rm ${{ secrets.CONTAINER }}
