@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          clean: false
       - uses: komorebitech/read-files-action@v1.5
         id: read_migration_files
         with:
@@ -24,17 +26,19 @@ jobs:
         run: |
           docker build -t ${{ secrets.REPOSITORY }}:${{ env.VERSION }} .
           docker push ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+      - name: set container
+        run: |
+          echo REP_CONTAINER='${{ secrets.CONTAINER }}1' >> $GITHUB_ENV
       - name: check container exists
         id: container_exits
-        run: echo '::set-output name=container::$(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p")'
-      - name: echo container_exits
-        run: echo ${{ steps.container_exits.outputs.container }}
+        run: |
+          echo EXISTS_CONTAINER=$(echo $(docker container ls --format "{{.Names}}" | sed -n "/${{ secrets.CONTAINER }}/p" | awk '$1=$1')1) >> $GITHUB_ENV
       - name: remove container
-        if: ${{ steps.container_exits.outputs.container }} == 'dog-ui'
+        if: ${{ env.EXISTS_CONTAINER == env.REP_CONTAINER }}
         run: |
           docker container stop ${{ secrets.CONTAINER }}
           docker container rm ${{ secrets.CONTAINER }}
       - name: Deploy
         run: |
           docker pull ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
-          docker run -d --name ${{ secrets.CONTAINER }} -p 8080:80 ${{ secrets.REPOSITORY }}:${{ env.VERSION }}
+          docker run -d --restart=always --name ${{ secrets.CONTAINER }} -p 8080:80 --location type=bind,source=/usr/local/nginx/conf /etc/nginx ${{ secrets.REPOSITORY }}:${{ env.VERSION }}

@@ -22,6 +22,15 @@
         </template>
       </el-menu-item>
     </el-menu>
+    <div style="
+    position: absolute;
+    bottom: 0;
+    color: white;
+    align-self: center;
+    ">
+      <span>备案号</span> 
+      <a href="https://beian.miit.gov.cn/" style="margin-left: 4px;" target="_blank">蜀ICP备2022017746号-1</a>
+    </div>
   </div>
 
 </template>
@@ -55,6 +64,8 @@ const navagationToMain = () => {
 .aside-container {
   background-color: #545c64;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   li.el-menu-item {
     border-bottom: 1px solid #606d7a;
